@@ -1,8 +1,8 @@
-#include "..\include\TradingEngine\order.h"
-#include "..\include\TradingEngine\limit_order.h"
-#include "..\include\TradingEngine\transactions.h"
-#include "..\include\TradingEngine\order_tree.h"
-#include "..\include\TradingEngine\order_book.h"
+#include "../include/TradingEngine/order.h"
+#include "../include/TradingEngine/limit_order.h"
+#include "../include/TradingEngine/transactions.h"
+#include "../include/TradingEngine/order_tree.h"
+#include "../include/TradingEngine/order_book.h"
 
 #include <fstream>
 #include <sstream>

@@ -34,10 +34,10 @@ public:
   OrderTree& getBuyTree();
   OrderTree& getSellTree();
   OrderTree& getOrderTreeByOrderType(const OrderType& order_type);
-  
-  const int& getTotalOrdersSubmitted();
-  const int& getTotalOrdersFulfilled();
-  const int& getTotalOrdersUnfulfilled();
+
+  int getTotalOrdersSubmitted() const;
+  int getTotalOrdersFulfilled() const;
+  int getTotalOrdersUnfulfilled() const;
 
   string getResults();
 

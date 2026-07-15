@@ -1,0 +1,2 @@
+/usr/bin/ar qc libTradingEngine.a CMakeFiles/TradingEngine.dir/src/trading_engine.cpp.o CMakeFiles/TradingEngine.dir/src/order.cpp.o CMakeFiles/TradingEngine.dir/src/order_book.cpp.o CMakeFiles/TradingEngine.dir/src/order_tree.cpp.o CMakeFiles/TradingEngine.dir/src/limit_order.cpp.o CMakeFiles/TradingEngine.dir/src/order_status.cpp.o CMakeFiles/TradingEngine.dir/src/order_type.cpp.o CMakeFiles/TradingEngine.dir/src/transactions.cpp.o
+/usr/bin/ranlib libTradingEngine.a

@@ -1,5 +1,5 @@
-#pragma once
-#include "..\include\TradingEngine\limit_order.h"
+// #pragma once
+#include "../include/TradingEngine/limit_order.h"
 
 #include <memory>
 using std::shared_ptr;
@@ -10,10 +10,10 @@ using std::ostringstream;
 #include <unordered_set>
 using std::unordered_set;
 
-#include "..\include\TradingEngine\transactions.h" 
-#include "..\include\TradingEngine\order_type.h"
-#include "..\include\TradingEngine\order_status.h"
-#include "..\include\TradingEngine\order.h"
+#include "../include/TradingEngine/transactions.h" 
+#include "../include/TradingEngine/order_type.h"
+#include "../include/TradingEngine/order_status.h"
+#include "../include/TradingEngine/order.h"
 
 const shared_ptr<Order>& LimitOrder::getHead() {
 	return limit_order_head;

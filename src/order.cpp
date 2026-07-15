@@ -1,5 +1,5 @@
-#pragma once
-#include "..\include\TradingEngine\order.h"
+// #pragma once
+#include "../include/TradingEngine/order.h"
 
 #include <algorithm>
 using std::min;
@@ -19,8 +19,8 @@ using std::string;
 using std::to_string;
 
 
-#include "..\include\TradingEngine\order_type.h"
-#include "..\include\TradingEngine\order_status.h"
+#include "../include/TradingEngine/order_type.h"
+#include "../include/TradingEngine/order_status.h"
 
 Order::Order(string input_symbol,unsigned int input_id, OrderType input_type, float input_price, float input_original_quantity):
 	symbol(input_symbol), id(input_id), type(input_type), price(input_price), original_quantity(input_original_quantity) {

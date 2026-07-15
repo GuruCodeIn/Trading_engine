@@ -1,6 +1,6 @@
-#include "..\include\TradingEngine\order_book.h"
+#include "../include/TradingEngine/order_book.h"
 
-#pragma once
+// #pragma once
 #include <cmath>
 #include <algorithm>
 
@@ -16,12 +16,12 @@ using std::endl;
 #include <memory>
 using std::shared_ptr;
 
-#include "..\include\TradingEngine\transactions.h" 
-#include "..\include\TradingEngine\order_type.h"
-#include "..\include\TradingEngine\order_status.h"
-#include "..\include\TradingEngine\order.h"
-#include "..\include\TradingEngine\limit_order.h"
-#include "..\include\TradingEngine\order_tree.h"
+#include "../include/TradingEngine/transactions.h" 
+#include "../include/TradingEngine/order_type.h"
+#include "../include/TradingEngine/order_status.h"
+#include "../include/TradingEngine/order.h"
+#include "../include/TradingEngine/limit_order.h"
+#include "../include/TradingEngine/order_tree.h"
 
 OrderTree& OrderBook::getBuyTree() {
 	return buy_tree;
@@ -36,16 +36,20 @@ OrderTree& OrderBook::getOrderTreeByOrderType(const OrderType& order_type) {
 	return (order_type == OrderType::BUY) ? buy_tree : sell_tree;
 }
 
-const int& OrderBook::getTotalOrdersSubmitted() {
+int OrderBook::getTotalOrdersSubmitted() const
+{
     return total_orders_submitted;
 }
 
-const int& OrderBook::getTotalOrdersFulfilled() {
-    return total_orders_submitted - (buy_tree.getLength() + sell_tree.getLength());
+int OrderBook::getTotalOrdersFulfilled() const
+{
+    return total_orders_submitted -
+           static_cast<int>(buy_tree.getLength() + sell_tree.getLength());
 }
 
-const int& OrderBook::getTotalOrdersUnfulfilled() {
-    return (buy_tree.getLength() + sell_tree.getLength());
+int OrderBook::getTotalOrdersUnfulfilled() const
+{
+    return static_cast<int>(buy_tree.getLength() + sell_tree.getLength());
 }
 
 string OrderBook::getResults() {

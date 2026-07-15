@@ -1,30 +1,39 @@
 /*
-Contains declaration for Transactions class responsible for storing executed order's, consisting of two vectors.
-One for storing orders' in raw format, and the other to store orders' in JSON format to save in database.
+Contains declaration for Transactions class responsible for storing executed orders.
+
+Currently stores raw order strings.
+TODO:
+Store executed trades in JSON format for REST API and database persistence.
 */
 
 #ifndef TRADING_ENGINE_SOURCE_HEADERS_TRANSACTIONS_H_
 #define TRADING_ENGINE_SOURCE_HEADERS_TRANSACTIONS_H_
 
 #pragma once
+
+#include <cstddef>
 #include <string>
 #include <vector>
 
-class Transactions {
+class Transactions
+{
 private:
-  std::vector<std::string> raw_orders;
-  std::vector<std::string> json_orders;
+	std::vector<std::string> raw_orders;
+
+	// TODO:
+	// Store executed trades in JSON format for REST API and database persistence.
+	std::vector<std::string> json_orders;
 
 public:
-	Transactions() : raw_orders({}), json_orders({}) {};
+	Transactions() = default;
 
-	/* Size of total modified order's */
+	/* Total stored order records */
 	size_t getLength() const;
 
-	/* Size of executed order's */
+	/* Total executed trades */
 	size_t getNumberOfExecutedOrders() const;
 
-	void addOrder(const std::string& raw_order);
+	void addOrder(const std::string &raw_order);
 };
-	
-#endif // !TRADING_ENGINE_SOURCE_HEADERS_TRANSACTIONS_H_
+
+#endif // TRADING_ENGINE_SOURCE_HEADERS_TRANSACTIONS_H_

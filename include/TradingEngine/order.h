@@ -15,9 +15,8 @@ Order class represents a data structure for handling incoming orders'.
 #include <unordered_map>
 #include <iostream>
 
-#include "..\include\TradingEngine\order_type.h"
-#include "..\include\TradingEngine\order_status.h"
-
+#include "order_type.h"
+#include "order_status.h"
 
 class Order {
 public:
