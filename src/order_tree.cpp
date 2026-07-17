@@ -19,6 +19,11 @@ size_t OrderTree::getLength() const {
     return order_set.size();
 }
 
+const std::map<float, int> &OrderTree::getPriceLevels() const
+{
+    return order_tree;
+}
+
 const float& OrderTree::getMinPrice() {
     return min_price;
 }

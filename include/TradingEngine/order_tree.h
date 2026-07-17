@@ -40,6 +40,8 @@ public:
 	/* Length of Order Tree, measured as total orders stored within the order_map */
 	size_t getLength() const;
 
+	const std::map<float, int> &getPriceLevels() const;
+
 	/* Min properties */
 	const float& getMinPrice();
 	void setMinPrice(const float& new_min);
