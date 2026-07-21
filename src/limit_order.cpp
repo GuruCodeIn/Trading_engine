@@ -35,6 +35,21 @@ int LimitOrder::getListLength() const {
 	return limit_order_length;
 }
 
+float LimitOrder::getTotalQuantity() const
+{
+	float totalQuantity = 0.0f;
+
+	std::shared_ptr<Order> currentOrder = limit_order_head;
+
+	while (currentOrder != nullptr)
+	{
+		totalQuantity += currentOrder->getPeakQuantity();
+		currentOrder = currentOrder->next_order;
+	}
+
+	return totalQuantity;
+}
+
 int LimitOrder::updateListLength(const int& update_increment) {
 	return limit_order_length += update_increment;
 }

@@ -62,9 +62,15 @@ target_link_libraries(multi_threaded
 
 add_executable(TradingBackend
     backend/main.cc
+
     backend/controllers/HealthController.cc
     backend/controllers/OrderController.cc
     backend/controllers/OrderBookController.cc
+    backend/controllers/MarketDataWebSocket.cc
+
+    backend/services/TradingService.cc
+
+    backend/repositories/OrderRepository.cc
 )
 
 target_include_directories(TradingBackend

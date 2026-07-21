@@ -1,6 +1,6 @@
 #include "OrderController.h"
 
-#include "../EngineContext.h"
+#include "../services/TradingService.h"
 
 #include "../../include/TradingEngine/order.h"
 #include "../../include/TradingEngine/order_type.h"
@@ -27,6 +27,7 @@ void OrderController::submitOrder(
 
     // Read values from JSON
     std::string symbol = (*json)["symbol"].asString();
+    unsigned int orderId = (*json)["id"].asUInt();
     std::string typeString = (*json)["type"].asString();
     double price = (*json)["price"].asDouble();
     int quantity = (*json)["quantity"].asInt();
@@ -49,11 +50,12 @@ void OrderController::submitOrder(
     // Create Order object
     Order order(
         symbol,
-        nextOrderId++,
+        orderId,
         orderType,
         static_cast<float>(price),
         static_cast<float>(quantity));
-    EngineContext::getEngine().submitOrder(order);
+    TradingService tradingService;
+    tradingService.submitOrder(order);
 
     // Create response
     Json::Value response;

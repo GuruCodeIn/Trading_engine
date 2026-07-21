@@ -44,6 +44,11 @@ const OrderType& OrderTree::getType() const {
     return type;
 }
 
+const std::unordered_map<float, LimitOrder> &OrderTree::getPriceMap() const
+{
+    return price_map;
+}
+
 void OrderTree::addPriceOrder(Order& incoming_order) {
 
     /* Add to tree */

@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/Users/guruprasadhm/Desktop/Trading-Engine/include -I/Users/guruprasadhm/Desktop/Trading-Engine/backend -isystem /opt/homebrew/include -isystem /opt/homebrew/opt/jsoncpp/include
+CXX_INCLUDES = -I/Users/guruprasadhm/Desktop/Trading-Engine/include -I/Users/guruprasadhm/Desktop/Trading-Engine/backend -isystem /opt/homebrew/include
 
 CXX_FLAGSarm64 = -std=gnu++17 -arch arm64
 

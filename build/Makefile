@@ -240,6 +240,30 @@ backend/controllers/HealthController.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/TradingBackend.dir/build.make CMakeFiles/TradingBackend.dir/backend/controllers/HealthController.cc.s
 .PHONY : backend/controllers/HealthController.cc.s
 
+backend/controllers/MarketDataWebSocket.o: backend/controllers/MarketDataWebSocket.cc.o
+.PHONY : backend/controllers/MarketDataWebSocket.o
+
+# target to build an object file
+backend/controllers/MarketDataWebSocket.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/TradingBackend.dir/build.make CMakeFiles/TradingBackend.dir/backend/controllers/MarketDataWebSocket.cc.o
+.PHONY : backend/controllers/MarketDataWebSocket.cc.o
+
+backend/controllers/MarketDataWebSocket.i: backend/controllers/MarketDataWebSocket.cc.i
+.PHONY : backend/controllers/MarketDataWebSocket.i
+
+# target to preprocess a source file
+backend/controllers/MarketDataWebSocket.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/TradingBackend.dir/build.make CMakeFiles/TradingBackend.dir/backend/controllers/MarketDataWebSocket.cc.i
+.PHONY : backend/controllers/MarketDataWebSocket.cc.i
+
+backend/controllers/MarketDataWebSocket.s: backend/controllers/MarketDataWebSocket.cc.s
+.PHONY : backend/controllers/MarketDataWebSocket.s
+
+# target to generate assembly for a file
+backend/controllers/MarketDataWebSocket.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/TradingBackend.dir/build.make CMakeFiles/TradingBackend.dir/backend/controllers/MarketDataWebSocket.cc.s
+.PHONY : backend/controllers/MarketDataWebSocket.cc.s
+
 backend/controllers/OrderBookController.o: backend/controllers/OrderBookController.cc.o
 .PHONY : backend/controllers/OrderBookController.o
 
@@ -311,6 +335,54 @@ backend/main.s: backend/main.cc.s
 backend/main.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/TradingBackend.dir/build.make CMakeFiles/TradingBackend.dir/backend/main.cc.s
 .PHONY : backend/main.cc.s
+
+backend/repositories/OrderRepository.o: backend/repositories/OrderRepository.cc.o
+.PHONY : backend/repositories/OrderRepository.o
+
+# target to build an object file
+backend/repositories/OrderRepository.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/TradingBackend.dir/build.make CMakeFiles/TradingBackend.dir/backend/repositories/OrderRepository.cc.o
+.PHONY : backend/repositories/OrderRepository.cc.o
+
+backend/repositories/OrderRepository.i: backend/repositories/OrderRepository.cc.i
+.PHONY : backend/repositories/OrderRepository.i
+
+# target to preprocess a source file
+backend/repositories/OrderRepository.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/TradingBackend.dir/build.make CMakeFiles/TradingBackend.dir/backend/repositories/OrderRepository.cc.i
+.PHONY : backend/repositories/OrderRepository.cc.i
+
+backend/repositories/OrderRepository.s: backend/repositories/OrderRepository.cc.s
+.PHONY : backend/repositories/OrderRepository.s
+
+# target to generate assembly for a file
+backend/repositories/OrderRepository.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/TradingBackend.dir/build.make CMakeFiles/TradingBackend.dir/backend/repositories/OrderRepository.cc.s
+.PHONY : backend/repositories/OrderRepository.cc.s
+
+backend/services/TradingService.o: backend/services/TradingService.cc.o
+.PHONY : backend/services/TradingService.o
+
+# target to build an object file
+backend/services/TradingService.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/TradingBackend.dir/build.make CMakeFiles/TradingBackend.dir/backend/services/TradingService.cc.o
+.PHONY : backend/services/TradingService.cc.o
+
+backend/services/TradingService.i: backend/services/TradingService.cc.i
+.PHONY : backend/services/TradingService.i
+
+# target to preprocess a source file
+backend/services/TradingService.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/TradingBackend.dir/build.make CMakeFiles/TradingBackend.dir/backend/services/TradingService.cc.i
+.PHONY : backend/services/TradingService.cc.i
+
+backend/services/TradingService.s: backend/services/TradingService.cc.s
+.PHONY : backend/services/TradingService.s
+
+# target to generate assembly for a file
+backend/services/TradingService.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/TradingBackend.dir/build.make CMakeFiles/TradingBackend.dir/backend/services/TradingService.cc.s
+.PHONY : backend/services/TradingService.cc.s
 
 src/limit_order.o: src/limit_order.cpp.o
 .PHONY : src/limit_order.o
@@ -525,6 +597,9 @@ help:
 	@echo "... backend/controllers/HealthController.o"
 	@echo "... backend/controllers/HealthController.i"
 	@echo "... backend/controllers/HealthController.s"
+	@echo "... backend/controllers/MarketDataWebSocket.o"
+	@echo "... backend/controllers/MarketDataWebSocket.i"
+	@echo "... backend/controllers/MarketDataWebSocket.s"
 	@echo "... backend/controllers/OrderBookController.o"
 	@echo "... backend/controllers/OrderBookController.i"
 	@echo "... backend/controllers/OrderBookController.s"
@@ -534,6 +609,12 @@ help:
 	@echo "... backend/main.o"
 	@echo "... backend/main.i"
 	@echo "... backend/main.s"
+	@echo "... backend/repositories/OrderRepository.o"
+	@echo "... backend/repositories/OrderRepository.i"
+	@echo "... backend/repositories/OrderRepository.s"
+	@echo "... backend/services/TradingService.o"
+	@echo "... backend/services/TradingService.i"
+	@echo "... backend/services/TradingService.s"
 	@echo "... src/limit_order.o"
 	@echo "... src/limit_order.i"
 	@echo "... src/limit_order.s"

@@ -41,6 +41,7 @@ public:
 	size_t getLength() const;
 
 	const std::map<float, int> &getPriceLevels() const;
+	const std::unordered_map<float, LimitOrder> &getPriceMap() const;
 
 	/* Min properties */
 	const float& getMinPrice();

@@ -36,7 +36,8 @@ Order::Order(string input_symbol,unsigned int input_id, OrderType input_type, fl
 	 
 }
 
-const std::string& Order::getSymbol() {
+const std::string &Order::getSymbol() const
+{
 	return symbol;
 }
 

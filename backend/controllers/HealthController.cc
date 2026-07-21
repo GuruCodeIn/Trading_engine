@@ -1,5 +1,8 @@
 #include "HealthController.h"
 
+#include <drogon/drogon.h>
+#include <drogon/orm/DbClient.h>
+
 using namespace drogon;
 
 void HealthController::health(
@@ -8,7 +11,20 @@ void HealthController::health(
 {
     Json::Value json;
 
-    json["status"] = "ok";
+    try
+    {
+        auto dbClient = drogon::app().getDbClient();
+
+        auto result = dbClient->execSqlSync("SELECT current_database();");
+
+        json["status"] = "ok";
+        json["database"] = result[0]["current_database"].as<std::string>();
+    }
+    catch (const std::exception &exception)
+    {
+        json["status"] = "error";
+        json["message"] = exception.what();
+    }
 
     auto response = HttpResponse::newHttpJsonResponse(json);
 

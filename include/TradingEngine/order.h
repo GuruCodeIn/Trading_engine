@@ -40,7 +40,7 @@ public:
   Order(std::string input_symbol, unsigned int input_id, OrderType input_type, float input_price, float input_original_quantity);
 
   /* Getter functions. */
-  const std::string& getSymbol();
+  const std::string &getSymbol() const;
   const unsigned int& getID() const;
   const OrderType& getType() const; 
   const float& getPrice() const; 

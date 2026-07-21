@@ -33,6 +33,8 @@ public:
   /* Getter functions */
   OrderTree& getBuyTree();
   OrderTree& getSellTree();
+  const std::map<float, int> &getBuyPriceLevels() const;
+  const std::map<float, int> &getSellPriceLevels() const;
   OrderTree& getOrderTreeByOrderType(const OrderType& order_type);
 
   int getTotalOrdersSubmitted() const;

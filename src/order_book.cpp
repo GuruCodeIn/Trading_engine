@@ -31,6 +31,16 @@ OrderTree& OrderBook::getSellTree() {
 	return sell_tree;
 }
 
+const std::map<float, int> &OrderBook::getBuyPriceLevels() const
+{
+    return buy_tree.getPriceLevels();
+}
+
+const std::map<float, int> &OrderBook::getSellPriceLevels() const
+{
+    return sell_tree.getPriceLevels();
+}
+
 OrderTree& OrderBook::getOrderTreeByOrderType(const OrderType& order_type) {
 
 	return (order_type == OrderType::BUY) ? buy_tree : sell_tree;

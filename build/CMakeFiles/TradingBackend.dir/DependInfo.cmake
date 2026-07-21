@@ -9,9 +9,12 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/Users/guruprasadhm/Desktop/Trading-Engine/backend/controllers/HealthController.cc" "CMakeFiles/TradingBackend.dir/backend/controllers/HealthController.cc.o" "gcc" "CMakeFiles/TradingBackend.dir/backend/controllers/HealthController.cc.o.d"
+  "/Users/guruprasadhm/Desktop/Trading-Engine/backend/controllers/MarketDataWebSocket.cc" "CMakeFiles/TradingBackend.dir/backend/controllers/MarketDataWebSocket.cc.o" "gcc" "CMakeFiles/TradingBackend.dir/backend/controllers/MarketDataWebSocket.cc.o.d"
   "/Users/guruprasadhm/Desktop/Trading-Engine/backend/controllers/OrderBookController.cc" "CMakeFiles/TradingBackend.dir/backend/controllers/OrderBookController.cc.o" "gcc" "CMakeFiles/TradingBackend.dir/backend/controllers/OrderBookController.cc.o.d"
   "/Users/guruprasadhm/Desktop/Trading-Engine/backend/controllers/OrderController.cc" "CMakeFiles/TradingBackend.dir/backend/controllers/OrderController.cc.o" "gcc" "CMakeFiles/TradingBackend.dir/backend/controllers/OrderController.cc.o.d"
   "/Users/guruprasadhm/Desktop/Trading-Engine/backend/main.cc" "CMakeFiles/TradingBackend.dir/backend/main.cc.o" "gcc" "CMakeFiles/TradingBackend.dir/backend/main.cc.o.d"
+  "/Users/guruprasadhm/Desktop/Trading-Engine/backend/repositories/OrderRepository.cc" "CMakeFiles/TradingBackend.dir/backend/repositories/OrderRepository.cc.o" "gcc" "CMakeFiles/TradingBackend.dir/backend/repositories/OrderRepository.cc.o.d"
+  "/Users/guruprasadhm/Desktop/Trading-Engine/backend/services/TradingService.cc" "CMakeFiles/TradingBackend.dir/backend/services/TradingService.cc.o" "gcc" "CMakeFiles/TradingBackend.dir/backend/services/TradingService.cc.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

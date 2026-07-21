@@ -128,12 +128,57 @@ CMakeFiles/TradingBackend.dir/backend/controllers/OrderBookController.cc.s: cmak
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/TradingBackend.dir/backend/controllers/OrderBookController.cc.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/guruprasadhm/Desktop/Trading-Engine/backend/controllers/OrderBookController.cc -o CMakeFiles/TradingBackend.dir/backend/controllers/OrderBookController.cc.s
 
+CMakeFiles/TradingBackend.dir/backend/controllers/MarketDataWebSocket.cc.o: CMakeFiles/TradingBackend.dir/flags.make
+CMakeFiles/TradingBackend.dir/backend/controllers/MarketDataWebSocket.cc.o: /Users/guruprasadhm/Desktop/Trading-Engine/backend/controllers/MarketDataWebSocket.cc
+CMakeFiles/TradingBackend.dir/backend/controllers/MarketDataWebSocket.cc.o: CMakeFiles/TradingBackend.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/guruprasadhm/Desktop/Trading-Engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/TradingBackend.dir/backend/controllers/MarketDataWebSocket.cc.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/TradingBackend.dir/backend/controllers/MarketDataWebSocket.cc.o -MF CMakeFiles/TradingBackend.dir/backend/controllers/MarketDataWebSocket.cc.o.d -o CMakeFiles/TradingBackend.dir/backend/controllers/MarketDataWebSocket.cc.o -c /Users/guruprasadhm/Desktop/Trading-Engine/backend/controllers/MarketDataWebSocket.cc
+
+CMakeFiles/TradingBackend.dir/backend/controllers/MarketDataWebSocket.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/TradingBackend.dir/backend/controllers/MarketDataWebSocket.cc.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/guruprasadhm/Desktop/Trading-Engine/backend/controllers/MarketDataWebSocket.cc > CMakeFiles/TradingBackend.dir/backend/controllers/MarketDataWebSocket.cc.i
+
+CMakeFiles/TradingBackend.dir/backend/controllers/MarketDataWebSocket.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/TradingBackend.dir/backend/controllers/MarketDataWebSocket.cc.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/guruprasadhm/Desktop/Trading-Engine/backend/controllers/MarketDataWebSocket.cc -o CMakeFiles/TradingBackend.dir/backend/controllers/MarketDataWebSocket.cc.s
+
+CMakeFiles/TradingBackend.dir/backend/services/TradingService.cc.o: CMakeFiles/TradingBackend.dir/flags.make
+CMakeFiles/TradingBackend.dir/backend/services/TradingService.cc.o: /Users/guruprasadhm/Desktop/Trading-Engine/backend/services/TradingService.cc
+CMakeFiles/TradingBackend.dir/backend/services/TradingService.cc.o: CMakeFiles/TradingBackend.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/guruprasadhm/Desktop/Trading-Engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/TradingBackend.dir/backend/services/TradingService.cc.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/TradingBackend.dir/backend/services/TradingService.cc.o -MF CMakeFiles/TradingBackend.dir/backend/services/TradingService.cc.o.d -o CMakeFiles/TradingBackend.dir/backend/services/TradingService.cc.o -c /Users/guruprasadhm/Desktop/Trading-Engine/backend/services/TradingService.cc
+
+CMakeFiles/TradingBackend.dir/backend/services/TradingService.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/TradingBackend.dir/backend/services/TradingService.cc.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/guruprasadhm/Desktop/Trading-Engine/backend/services/TradingService.cc > CMakeFiles/TradingBackend.dir/backend/services/TradingService.cc.i
+
+CMakeFiles/TradingBackend.dir/backend/services/TradingService.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/TradingBackend.dir/backend/services/TradingService.cc.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/guruprasadhm/Desktop/Trading-Engine/backend/services/TradingService.cc -o CMakeFiles/TradingBackend.dir/backend/services/TradingService.cc.s
+
+CMakeFiles/TradingBackend.dir/backend/repositories/OrderRepository.cc.o: CMakeFiles/TradingBackend.dir/flags.make
+CMakeFiles/TradingBackend.dir/backend/repositories/OrderRepository.cc.o: /Users/guruprasadhm/Desktop/Trading-Engine/backend/repositories/OrderRepository.cc
+CMakeFiles/TradingBackend.dir/backend/repositories/OrderRepository.cc.o: CMakeFiles/TradingBackend.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/guruprasadhm/Desktop/Trading-Engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/TradingBackend.dir/backend/repositories/OrderRepository.cc.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/TradingBackend.dir/backend/repositories/OrderRepository.cc.o -MF CMakeFiles/TradingBackend.dir/backend/repositories/OrderRepository.cc.o.d -o CMakeFiles/TradingBackend.dir/backend/repositories/OrderRepository.cc.o -c /Users/guruprasadhm/Desktop/Trading-Engine/backend/repositories/OrderRepository.cc
+
+CMakeFiles/TradingBackend.dir/backend/repositories/OrderRepository.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/TradingBackend.dir/backend/repositories/OrderRepository.cc.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/guruprasadhm/Desktop/Trading-Engine/backend/repositories/OrderRepository.cc > CMakeFiles/TradingBackend.dir/backend/repositories/OrderRepository.cc.i
+
+CMakeFiles/TradingBackend.dir/backend/repositories/OrderRepository.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/TradingBackend.dir/backend/repositories/OrderRepository.cc.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/guruprasadhm/Desktop/Trading-Engine/backend/repositories/OrderRepository.cc -o CMakeFiles/TradingBackend.dir/backend/repositories/OrderRepository.cc.s
+
 # Object files for target TradingBackend
 TradingBackend_OBJECTS = \
 "CMakeFiles/TradingBackend.dir/backend/main.cc.o" \
 "CMakeFiles/TradingBackend.dir/backend/controllers/HealthController.cc.o" \
 "CMakeFiles/TradingBackend.dir/backend/controllers/OrderController.cc.o" \
-"CMakeFiles/TradingBackend.dir/backend/controllers/OrderBookController.cc.o"
+"CMakeFiles/TradingBackend.dir/backend/controllers/OrderBookController.cc.o" \
+"CMakeFiles/TradingBackend.dir/backend/controllers/MarketDataWebSocket.cc.o" \
+"CMakeFiles/TradingBackend.dir/backend/services/TradingService.cc.o" \
+"CMakeFiles/TradingBackend.dir/backend/repositories/OrderRepository.cc.o"
 
 # External object files for target TradingBackend
 TradingBackend_EXTERNAL_OBJECTS =
@@ -142,13 +187,16 @@ TradingBackend: CMakeFiles/TradingBackend.dir/backend/main.cc.o
 TradingBackend: CMakeFiles/TradingBackend.dir/backend/controllers/HealthController.cc.o
 TradingBackend: CMakeFiles/TradingBackend.dir/backend/controllers/OrderController.cc.o
 TradingBackend: CMakeFiles/TradingBackend.dir/backend/controllers/OrderBookController.cc.o
+TradingBackend: CMakeFiles/TradingBackend.dir/backend/controllers/MarketDataWebSocket.cc.o
+TradingBackend: CMakeFiles/TradingBackend.dir/backend/services/TradingService.cc.o
+TradingBackend: CMakeFiles/TradingBackend.dir/backend/repositories/OrderRepository.cc.o
 TradingBackend: CMakeFiles/TradingBackend.dir/build.make
 TradingBackend: libTradingEngine.a
-TradingBackend: /opt/homebrew/lib/libdrogon.1.9.13.dylib
-TradingBackend: /opt/homebrew/lib/libtrantor.1.5.28.dylib
-TradingBackend: /opt/homebrew/opt/jsoncpp/lib/libjsoncpp.dylib
+TradingBackend: /usr/local/lib/libdrogon.1.9.13.dylib
+TradingBackend: /usr/local/lib/libtrantor.1.5.28.dylib
+TradingBackend: /opt/homebrew/lib/libjsoncpp.27.dylib
 TradingBackend: CMakeFiles/TradingBackend.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/guruprasadhm/Desktop/Trading-Engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable TradingBackend"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/guruprasadhm/Desktop/Trading-Engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking CXX executable TradingBackend"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/TradingBackend.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

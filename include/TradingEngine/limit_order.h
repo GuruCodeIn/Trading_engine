@@ -38,6 +38,8 @@ public:
 
 	int getListLength() const;
 
+	float getTotalQuantity() const;
+
 	int updateListLength(const int& update_increment);
 
 	/* Adds an incoming Order, and stores it as the tail of the LinkedList. */
