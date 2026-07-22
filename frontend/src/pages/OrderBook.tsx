@@ -21,14 +21,24 @@ function OrderBook() {
 
     const [loading, setLoading] = useState(false);
 
-    async function fetchOrderBook() {
-        try {
-            setLoading(true);
+    const [error, setError] = useState("");
 
+    async function fetchOrderBook() {
+        setLoading(true);
+        setError("");
+
+        try {
             const data = await getOrderBook(symbol);
+
             setOrderBook(data);
         } catch (error) {
             console.error(error);
+
+            setOrderBook(null);
+
+            setError(
+                "Unable to load the order book. Please try again."
+            );
         } finally {
             setLoading(false);
         }
@@ -57,6 +67,7 @@ function OrderBook() {
                 />
 
                 <button
+                    type="button"
                     onClick={fetchOrderBook}
                     disabled={loading}
                 >
@@ -68,7 +79,17 @@ function OrderBook() {
 
             <br />
 
-            {orderBook && (
+            {loading && (
+                <p>Loading order book...</p>
+            )}
+
+            {error && (
+                <p>
+                    <strong>{error}</strong>
+                </p>
+            )}
+
+            {!loading && !error && orderBook && (
                 <div>
                     <p>
                         <strong>Symbol:</strong>{" "}

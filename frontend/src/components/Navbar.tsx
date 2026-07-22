@@ -9,11 +9,21 @@ function Navbar() {
                 </li>
 
                 <li>
-                    <Link to="/order-book">Order Book</Link>
+                    <Link to="/order-book">
+                        Order Book
+                    </Link>
                 </li>
 
                 <li>
-                    <Link to="/trade-history">Trade History</Link>
+                    <Link to="/place-order">
+                        Place Order
+                    </Link>
+                </li>
+
+                <li>
+                    <Link to="/trade-history">
+                        Trade History
+                    </Link>
                 </li>
             </ul>
 

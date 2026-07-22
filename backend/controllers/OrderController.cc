@@ -25,49 +25,68 @@ void OrderController::submitOrder(
         return;
     }
 
-    // Read values from JSON
-    std::string symbol = (*json)["symbol"].asString();
-    unsigned int orderId = (*json)["id"].asUInt();
-    std::string typeString = (*json)["type"].asString();
-    double price = (*json)["price"].asDouble();
-    int quantity = (*json)["quantity"].asInt();
+    std::string symbol =
+        (*json)["symbol"].asString();
 
-    // Convert string to OrderType
-    OrderType orderType;
+    double price =
+        (*json)["price"].asDouble();
 
-    if (typeString == "BUY")
+    int quantity =
+        (*json)["quantity"].asInt();
+
+    std::string side =
+        (*json)["side"].asString();
+
+    std::string orderType =
+        (*json)["orderType"].asString();
+
+    OrderType engineSide;
+
+    if (side == "BUY")
     {
-        orderType = OrderType::BUY;
+        engineSide = OrderType::BUY;
     }
     else
     {
-        orderType = OrderType::SELL;
+        engineSide = OrderType::SELL;
     }
 
-    // Generate temporary Order ID
     static unsigned int nextOrderId = 1;
 
-    // Create Order object
     Order order(
         symbol,
-        orderId,
-        orderType,
+        nextOrderId++,
+        engineSide,
         static_cast<float>(price),
         static_cast<float>(quantity));
+
     TradingService tradingService;
     tradingService.submitOrder(order);
 
-    // Create response
     Json::Value response;
 
     response["success"] = true;
-    response["message"] = "Order submitted successfully.";
+    response["message"] =
+        "Order submitted successfully.";
 
-    response["order"]["id"] = order.getID();
-    response["order"]["symbol"] = order.getSymbol();
-    response["order"]["type"] = typeString;
-    response["order"]["price"] = order.getPrice();
-    response["order"]["quantity"] = order.getOriginalQuantity();
+    response["order"]["id"] =
+        order.getID();
 
-    callback(HttpResponse::newHttpJsonResponse(response));
+    response["order"]["symbol"] =
+        order.getSymbol();
+
+    response["order"]["side"] =
+        side;
+
+    response["order"]["orderType"] =
+        orderType;
+
+    response["order"]["price"] =
+        order.getPrice();
+
+    response["order"]["quantity"] =
+        order.getOriginalQuantity();
+
+    callback(
+        HttpResponse::newHttpJsonResponse(response));
 }

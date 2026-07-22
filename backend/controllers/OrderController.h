@@ -12,7 +12,8 @@ public:
     ADD_METHOD_TO(
         OrderController::submitOrder,
         "/order",
-        Post);
+        Post,
+        Options);
 
     METHOD_LIST_END
 
