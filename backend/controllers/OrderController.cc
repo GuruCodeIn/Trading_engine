@@ -90,3 +90,44 @@ void OrderController::submitOrder(
     callback(
         HttpResponse::newHttpJsonResponse(response));
 }
+
+void OrderController::getAllOrders(
+    const HttpRequestPtr &req,
+    std::function<void(const HttpResponsePtr &)> &&callback)
+{
+    TradingService tradingService;
+
+    auto orders =
+        tradingService.getAllOrders();
+
+    Json::Value response;
+
+    response["success"] = true;
+
+    for (const auto &order : orders)
+    {
+        Json::Value orderJson;
+
+        orderJson["id"] =
+            order.getID();
+
+        orderJson["symbol"] =
+            order.getSymbol();
+
+        orderJson["side"] =
+            (order.getType() == OrderType::BUY)
+                ? "BUY"
+                : "SELL";
+
+        orderJson["price"] =
+            order.getPrice();
+
+        orderJson["quantity"] =
+            order.getOriginalQuantity();
+
+        response["orders"].append(orderJson);
+    }
+
+    callback(
+        HttpResponse::newHttpJsonResponse(response));
+}

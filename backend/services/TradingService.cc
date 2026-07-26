@@ -21,7 +21,7 @@ void TradingService::submitOrder(Order &order)
     message["order"]["id"] = order.getID();
     message["order"]["symbol"] = order.getSymbol();
     message["order"]["type"] =
-        (order.getType() == OrderType::BUY) ? "BUY" : "SELL";
+    (order.getType() == OrderType::BUY) ? "BUY" : "SELL";
     message["order"]["price"] = order.getPrice();
     message["order"]["quantity"] = order.getOriginalQuantity();
 
@@ -30,10 +30,24 @@ void TradingService::submitOrder(Order &order)
     std::string jsonMessage =
         Json::writeString(writer, message);
 
+    std::cout
+        << "[Broadcast] Engine Order ID = "
+        << order.getID()
+        << std::endl;
+
+    std::cout
+        << "[Broadcast JSON] "
+        << jsonMessage
+        << std::endl;
+
     MarketDataWebSocket::broadcast(jsonMessage);
 }
 
 OrderBook &TradingService::getOrderBook(const std::string &symbol)
 {
     return getEngine().getOrderBook(symbol);
+}
+std::vector<Order> TradingService::getAllOrders()
+{
+    return orderRepository.getAllOrders();
 }

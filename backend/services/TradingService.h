@@ -1,8 +1,12 @@
 #pragma once
 
 #include "../../include/TradingEngine/trading_engine.h"
+#include "../../include/TradingEngine/order.h"
+
 #include "../EngineContext.h"
 #include "../repositories/OrderRepository.h"
+
+#include <vector>
 
 class TradingService
 {
@@ -15,4 +19,6 @@ public:
     void submitOrder(Order &order);
 
     OrderBook &getOrderBook(const std::string &symbol);
+
+    std::vector<Order> getAllOrders();
 };

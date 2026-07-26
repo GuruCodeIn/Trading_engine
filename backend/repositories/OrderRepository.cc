@@ -79,3 +79,70 @@ void OrderRepository::saveOrder(const Order &order)
             << std::endl;
     }
 }
+std::vector<Order> OrderRepository::getAllOrders()
+{
+    std::vector<Order> orders;
+
+    auto dbClient = drogon::app().getDbClient();
+
+    try
+    {
+        auto result = dbClient->execSqlSync(
+            "SELECT id, symbol, type, price, original_quantity "
+            "FROM orders "
+            "ORDER BY id DESC");
+
+        for (const auto &row : result)
+        {
+            OrderType orderType = OrderType::BUY;
+
+            if (row["type"].as<std::string>() == "SELL")
+            {
+                orderType = OrderType::SELL;
+            }
+
+            Order order(
+                row["symbol"].as<std::string>(),
+                row["id"].as<unsigned int>(),
+                orderType,
+                row["price"].as<float>(),
+                row["original_quantity"].as<float>());
+
+            orders.push_back(order);
+        }
+    }
+    catch (const drogon::orm::DrogonDbException &e)
+    {
+        std::cerr
+            << "[Repository] Database Error: "
+            << e.base().what()
+            << std::endl;
+    }
+
+    return orders;
+}
+
+unsigned int OrderRepository::getNextOrderId()
+{
+    auto dbClient = drogon::app().getDbClient();
+
+    try
+    {
+        auto result = dbClient->execSqlSync(
+            "SELECT COALESCE(MAX(id), 0) AS max_id FROM orders");
+
+        unsigned int maxId =
+            result[0]["max_id"].as<unsigned int>();
+
+        return maxId + 1;
+    }
+    catch (const drogon::orm::DrogonDbException &e)
+    {
+        std::cerr
+            << "[Repository] Database Error: "
+            << e.base().what()
+            << std::endl;
+
+        return 1;
+    }
+}
