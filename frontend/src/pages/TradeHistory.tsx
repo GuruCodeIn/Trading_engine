@@ -9,7 +9,7 @@ import {
 
 import {
     connectWebSocket,
-    disconnectWebSocket,
+    subscribeWebSocket,
 } from "../services/webSocketService";
 
 function TradeHistory() {
@@ -17,38 +17,56 @@ function TradeHistory() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
-    useEffect(() => {
-        async function loadOrders() {
-            try {
-                const data = await getAllOrders();
+    async function loadOrders() {
+        try {
+            const data = await getAllOrders();
 
-                setOrders(data);
-            } catch {
-                setError("Failed to load trade history.");
-            } finally {
-                setLoading(false);
-            }
+            setOrders(data);
+        } catch {
+            setError("Failed to load trade history.");
+        } finally {
+            setLoading(false);
         }
+    }
 
+    useEffect(() => {
         loadOrders();
 
-        connectWebSocket((message) => {
-            if (message.event === "order_created") {
-                setOrders((previousOrders) => [
-                    {
-                        id: message.order.id,
-                        symbol: message.order.symbol,
-                        side: message.order.type,
-                        price: message.order.price,
-                        quantity: message.order.quantity,
-                    },
-                    ...previousOrders,
-                ]);
-            }
-        });
+        connectWebSocket();
+
+        const unsubscribe =
+            subscribeWebSocket((message) => {
+                if (
+                    message.event ===
+                    "order_created"
+                ) {
+                    setOrders(
+                        (
+                            previousOrders
+                        ) => [
+                            {
+                                id: message.order.id,
+                                symbol:
+                                    message.order
+                                        .symbol,
+                                side:
+                                    message.order
+                                        .type,
+                                price:
+                                    message.order
+                                        .price,
+                                quantity:
+                                    message.order
+                                        .quantity,
+                            },
+                            ...previousOrders,
+                        ]
+                    );
+                }
+            });
 
         return () => {
-            disconnectWebSocket();
+            unsubscribe();
         };
     }, []);
 
@@ -66,7 +84,8 @@ function TradeHistory() {
                     cellPadding={8}
                     style={{
                         margin: "20px auto",
-                        borderCollapse: "collapse",
+                        borderCollapse:
+                            "collapse",
                     }}
                 >
                     <thead>
@@ -81,12 +100,24 @@ function TradeHistory() {
 
                     <tbody>
                         {orders.map((order) => (
-                            <tr key={order.id}>
-                                <td>{order.id}</td>
-                                <td>{order.symbol}</td>
-                                <td>{order.side}</td>
-                                <td>{order.price}</td>
-                                <td>{order.quantity}</td>
+                            <tr
+                                key={order.id}
+                            >
+                                <td>
+                                    {order.id}
+                                </td>
+                                <td>
+                                    {order.symbol}
+                                </td>
+                                <td>
+                                    {order.side}
+                                </td>
+                                <td>
+                                    {order.price}
+                                </td>
+                                <td>
+                                    {order.quantity}
+                                </td>
                             </tr>
                         ))}
                     </tbody>

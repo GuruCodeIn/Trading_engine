@@ -1,6 +1,7 @@
 #include "OrderController.h"
 
 #include "../services/TradingService.h"
+#include "../repositories/OrderRepository.h"
 
 #include "../../include/TradingEngine/order.h"
 #include "../../include/TradingEngine/order_type.h"
@@ -51,7 +52,10 @@ void OrderController::submitOrder(
         engineSide = OrderType::SELL;
     }
 
-    static unsigned int nextOrderId = 1;
+    static OrderRepository orderRepository;
+
+    static unsigned int nextOrderId =
+        orderRepository.getNextOrderId();
 
     Order order(
         symbol,

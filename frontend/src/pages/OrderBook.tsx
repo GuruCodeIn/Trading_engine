@@ -3,32 +3,48 @@ import { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import { getOrderBook } from "../services/orderBookService";
 
+import {
+    connectWebSocket,
+    subscribeWebSocket,
+} from "../services/webSocketService";
+
+type PriceLevel = {
+    price: number;
+    orderCount: number;
+};
+
 type OrderBookResponse = {
     symbol: string;
     success: boolean;
-    buyOrders: unknown[];
-    sellOrders: unknown[];
+    buyOrders: PriceLevel[];
+    sellOrders: PriceLevel[];
     totalOrdersSubmitted: number;
     totalOrdersFulfilled: number;
     totalOrdersUnfulfilled: number;
 };
 
 function OrderBook() {
-    const [symbol, setSymbol] = useState("AAPL");
+    const [symbol, setSymbol] =
+        useState("AAPL");
 
     const [orderBook, setOrderBook] =
-        useState<OrderBookResponse | null>(null);
+        useState<OrderBookResponse | null>(
+            null
+        );
 
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] =
+        useState(false);
 
-    const [error, setError] = useState("");
+    const [error, setError] =
+        useState("");
 
     async function fetchOrderBook() {
         setLoading(true);
         setError("");
 
         try {
-            const data = await getOrderBook(symbol);
+            const data =
+                await getOrderBook(symbol);
 
             setOrderBook(data);
         } catch (error) {
@@ -46,6 +62,24 @@ function OrderBook() {
 
     useEffect(() => {
         fetchOrderBook();
+
+        connectWebSocket();
+
+        const unsubscribe =
+            subscribeWebSocket(
+                (message) => {
+                    if (
+                        message.event ===
+                        "order_created"
+                    ) {
+                        fetchOrderBook();
+                    }
+                }
+            );
+
+        return () => {
+            unsubscribe();
+        };
     }, []);
 
     return (
@@ -62,13 +96,17 @@ function OrderBook() {
                     type="text"
                     value={symbol}
                     onChange={(event) =>
-                        setSymbol(event.target.value.toUpperCase())
+                        setSymbol(
+                            event.target.value.toUpperCase()
+                        )
                     }
                 />
 
                 <button
                     type="button"
-                    onClick={fetchOrderBook}
+                    onClick={
+                        fetchOrderBook
+                    }
                     disabled={loading}
                 >
                     {loading
@@ -80,55 +118,238 @@ function OrderBook() {
             <br />
 
             {loading && (
-                <p>Loading order book...</p>
+                <p>
+                    Loading order
+                    book...
+                </p>
             )}
 
             {error && (
                 <p>
-                    <strong>{error}</strong>
+                    <strong>
+                        {error}
+                    </strong>
                 </p>
             )}
 
-            {!loading && !error && orderBook && (
-                <div>
-                    <p>
-                        <strong>Symbol:</strong>{" "}
-                        {orderBook.symbol}
-                    </p>
+            {!loading &&
+                !error &&
+                orderBook && (
+                    <>
+                        <p>
+                            <strong>
+                                Symbol:
+                            </strong>{" "}
+                            {
+                                orderBook.symbol
+                            }
+                        </p>
 
-                    <p>
-                        <strong>Buy Orders:</strong>{" "}
-                        {orderBook.buyOrders.length}
-                    </p>
+                        <div
+                            style={{
+                                display:
+                                    "flex",
+                                gap: "40px",
+                                justifyContent:
+                                    "center",
+                                flexWrap:
+                                    "wrap",
+                            }}
+                        >
+                            <div>
+                                <h3
+                                    style={{
+                                        color:
+                                            "green",
+                                    }}
+                                >
+                                    BUY
+                                    ORDERS
+                                </h3>
 
-                    <p>
-                        <strong>Sell Orders:</strong>{" "}
-                        {orderBook.sellOrders.length}
-                    </p>
+                                <table
+                                    border={
+                                        1
+                                    }
+                                    cellPadding={
+                                        8
+                                    }
+                                    style={{
+                                        borderCollapse:
+                                            "collapse",
+                                    }}
+                                >
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                Price
+                                            </th>
+                                            <th>
+                                                Orders
+                                            </th>
+                                        </tr>
+                                    </thead>
 
-                    {orderBook.buyOrders.length === 0 &&
-                        orderBook.sellOrders.length === 0 && (
-                            <p>
-                                No orders available for this symbol.
-                            </p>
-                        )}
+                                    <tbody>
+                                        {orderBook.buyOrders.length ===
+                                        0 ? (
+                                            <tr>
+                                                <td
+                                                    colSpan={
+                                                        2
+                                                    }
+                                                >
+                                                    No
+                                                    Buy
+                                                    Orders
+                                                </td>
+                                            </tr>
+                                        ) : (
+                                            orderBook.buyOrders.map(
+                                                (
+                                                    order,
+                                                    index
+                                                ) => (
+                                                    <tr
+                                                        key={
+                                                            index
+                                                        }
+                                                    >
+                                                        <td>
+                                                            {
+                                                                order.price
+                                                            }
+                                                        </td>
 
-                    <p>
-                        <strong>Total Submitted:</strong>{" "}
-                        {orderBook.totalOrdersSubmitted}
-                    </p>
+                                                        <td>
+                                                            {
+                                                                order.orderCount
+                                                            }
+                                                        </td>
+                                                    </tr>
+                                                )
+                                            )
+                                        )}
+                                    </tbody>
+                                </table>
+                            </div>
 
-                    <p>
-                        <strong>Total Fulfilled:</strong>{" "}
-                        {orderBook.totalOrdersFulfilled}
-                    </p>
+                            <div>
+                                <h3
+                                    style={{
+                                        color:
+                                            "red",
+                                    }}
+                                >
+                                    SELL
+                                    ORDERS
+                                </h3>
 
-                    <p>
-                        <strong>Total Unfulfilled:</strong>{" "}
-                        {orderBook.totalOrdersUnfulfilled}
-                    </p>
-                </div>
-            )}
+                                <table
+                                    border={
+                                        1
+                                    }
+                                    cellPadding={
+                                        8
+                                    }
+                                    style={{
+                                        borderCollapse:
+                                            "collapse",
+                                    }}
+                                >
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                Price
+                                            </th>
+                                            <th>
+                                                Orders
+                                            </th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        {orderBook.sellOrders.length ===
+                                        0 ? (
+                                            <tr>
+                                                <td
+                                                    colSpan={
+                                                        2
+                                                    }
+                                                >
+                                                    No
+                                                    Sell
+                                                    Orders
+                                                </td>
+                                            </tr>
+                                        ) : (
+                                            orderBook.sellOrders.map(
+                                                (
+                                                    order,
+                                                    index
+                                                ) => (
+                                                    <tr
+                                                        key={
+                                                            index
+                                                        }
+                                                    >
+                                                        <td>
+                                                            {
+                                                                order.price
+                                                            }
+                                                        </td>
+
+                                                        <td>
+                                                            {
+                                                                order.orderCount
+                                                            }
+                                                        </td>
+                                                    </tr>
+                                                )
+                                            )
+                                        )}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <br />
+
+                        <h3>
+                            Statistics
+                        </h3>
+
+                        <p>
+                            <strong>
+                                Total
+                                Submitted:
+                            </strong>{" "}
+                            {
+                                orderBook.totalOrdersSubmitted
+                            }
+                        </p>
+
+                        <p>
+                            <strong>
+                                Total
+                                Fulfilled:
+                            </strong>{" "}
+                            {
+                                orderBook.totalOrdersFulfilled
+                            }
+                        </p>
+
+                        <p>
+                            <strong>
+                                Total
+                                Unfulfilled:
+                            </strong>{" "}
+                            {
+                                orderBook.totalOrdersUnfulfilled
+                            }
+                        </p>
+                    </>
+                )}
         </Layout>
     );
 }
