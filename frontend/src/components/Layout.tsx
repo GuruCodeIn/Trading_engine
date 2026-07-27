@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useState } from "react";
 
 import Navbar from "./Navbar";
 
@@ -7,18 +7,67 @@ type LayoutProps = {
 };
 
 function Layout({ children }: LayoutProps) {
+    const [currentTime, setCurrentTime] = useState("");
+
+    useEffect(() => {
+        function updateTime() {
+            const now = new Date();
+
+            setCurrentTime(
+                now.toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit",
+                })
+            );
+        }
+
+        updateTime();
+
+        const timer = setInterval(updateTime, 1000);
+
+        return () => clearInterval(timer);
+    }, []);
+
     return (
-        <div>
-            <header>
-                <h1>Trading Engine</h1>
-                <hr />
-            </header>
+        <div className="app-layout">
+            <aside className="sidebar">
+                <div className="sidebar-logo">
+                    <h2>Trading Engine</h2>
 
-            <Navbar />
+                    <p>Professional Trading Platform</p>
+                </div>
 
-            <main>
-                {children}
-            </main>
+                <Navbar />
+            </aside>
+
+            <div className="main-section">
+                <header className="topbar">
+                    <div className="topbar-left">
+                        <h1>Trading Dashboard</h1>
+                    </div>
+
+                    <div className="topbar-right">
+                        <div className="live-status">
+                            <span className="live-dot"></span>
+
+                            LIVE
+                        </div>
+
+                        <div className="clock">
+                            {currentTime}
+                        </div>
+
+                        <div className="user-avatar">
+                            GP
+                        </div>
+                    </div>
+                </header>
+
+                <main className="content">
+                    {children}
+                </main>
+            </div>
         </div>
     );
 }

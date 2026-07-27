@@ -1,8 +1,26 @@
 let socket: WebSocket | null = null;
 
-const listeners: Array<(data: any) => void> = [];
+const messageListeners: Array<
+    (data: any) => void
+> = [];
+
+const statusListeners: Array<
+    (status: string) => void
+> = [];
+
+let reconnectTimer: number | null = null;
+
+function notifyStatus(
+    status: string
+) {
+    statusListeners.forEach(
+        (listener) =>
+            listener(status)
+    );
+}
 
 export function connectWebSocket() {
+
     if (
         socket &&
         (
@@ -13,77 +31,176 @@ export function connectWebSocket() {
         return socket;
     }
 
+    notifyStatus(
+        "CONNECTING"
+    );
+
     socket = new WebSocket(
         "ws://127.0.0.1:5555/ws/market"
     );
 
     socket.onopen = () => {
-        console.log("[WebSocket] Connected");
+
+        console.log(
+            "[WebSocket] Connected"
+        );
+
+        notifyStatus(
+            "CONNECTED"
+        );
+
     };
 
-    socket.onmessage = (event) => {
-        console.log(
-            "[WebSocket] Raw message:",
-            event.data
-        );
+    socket.onmessage = (
+        event
+    ) => {
 
         if (!event.data) {
             return;
         }
 
         try {
-            const data = JSON.parse(event.data);
 
-            listeners.forEach((listener) =>
-                listener(data)
+            const data =
+                JSON.parse(
+                    event.data
+                );
+
+            messageListeners.forEach(
+                (listener) =>
+                    listener(data)
             );
+
         } catch {
+
             console.error(
-                "[WebSocket] Invalid JSON:",
-                event.data
+                "[WebSocket] Invalid JSON"
             );
+
         }
+
     };
 
-    socket.onerror = (error) => {
+    socket.onerror = (
+        error
+    ) => {
+
         console.error(
-            "[WebSocket] Error:",
+            "[WebSocket] Error",
             error
         );
+
     };
 
     socket.onclose = () => {
+
         console.log(
             "[WebSocket] Disconnected"
         );
 
         socket = null;
+
+        notifyStatus(
+            "DISCONNECTED"
+        );
+
+        if (
+            reconnectTimer === null
+        ) {
+
+            notifyStatus(
+                "RECONNECTING"
+            );
+
+            reconnectTimer =
+                window.setTimeout(
+                    () => {
+
+                        reconnectTimer =
+                            null;
+
+                        connectWebSocket();
+
+                    },
+                    3000
+                );
+
+        }
+
     };
 
     return socket;
+
 }
 
 export function subscribeWebSocket(
-    listener: (data: any) => void
+    listener: (
+        data: any
+    ) => void
 ) {
-    listeners.push(listener);
+
+    messageListeners.push(
+        listener
+    );
 
     return () => {
+
         const index =
-            listeners.indexOf(listener);
+            messageListeners.indexOf(
+                listener
+            );
 
         if (index !== -1) {
-            listeners.splice(index, 1);
+
+            messageListeners.splice(
+                index,
+                1
+            );
+
         }
+
     };
+
+}
+
+export function subscribeConnectionStatus(
+    listener: (
+        status: string
+    ) => void
+) {
+
+    statusListeners.push(
+        listener
+    );
+
+    return () => {
+
+        const index =
+            statusListeners.indexOf(
+                listener
+            );
+
+        if (index !== -1) {
+
+            statusListeners.splice(
+                index,
+                1
+            );
+
+        }
+
+    };
+
 }
 
 export function disconnectWebSocket() {
-    if (
-        socket &&
-        listeners.length === 0
-    ) {
+
+    if (socket) {
+
         socket.close();
+
         socket = null;
+
     }
+
 }

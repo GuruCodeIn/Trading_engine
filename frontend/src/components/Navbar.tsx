@@ -1,33 +1,75 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 function Navbar() {
     return (
-        <nav>
-            <ul>
-                <li>
-                    <Link to="/">Dashboard</Link>
-                </li>
+        <nav className="sidebar-nav">
+            <NavLink
+                to="/"
+                className={({ isActive }) =>
+                    isActive
+                        ? "nav-item active"
+                        : "nav-item"
+                }
+            >
+                <span className="nav-icon">
+                    📊
+                </span>
 
-                <li>
-                    <Link to="/order-book">
-                        Order Book
-                    </Link>
-                </li>
+                <span>
+                    Dashboard
+                </span>
+            </NavLink>
 
-                <li>
-                    <Link to="/place-order">
-                        Place Order
-                    </Link>
-                </li>
+            <NavLink
+                to="/order-book"
+                className={({ isActive }) =>
+                    isActive
+                        ? "nav-item active"
+                        : "nav-item"
+                }
+            >
+                <span className="nav-icon">
+                    📖
+                </span>
 
-                <li>
-                    <Link to="/trade-history">
-                        Trade History
-                    </Link>
-                </li>
-            </ul>
+                <span>
+                    Order Book
+                </span>
+            </NavLink>
 
-            <hr />
+            <NavLink
+                to="/place-order"
+                className={({ isActive }) =>
+                    isActive
+                        ? "nav-item active"
+                        : "nav-item"
+                }
+            >
+                <span className="nav-icon">
+                    💹
+                </span>
+
+                <span>
+                    Place Order
+                </span>
+            </NavLink>
+
+            <NavLink
+                to="/trade-history"
+                className={({ isActive }) =>
+                    isActive
+                        ? "nav-item active"
+                        : "nav-item"
+                }
+            >
+                <span className="nav-icon">
+                    📜
+                </span>
+
+                <span>
+                    Trade History
+                </span>
+            </NavLink>
         </nav>
     );
 }
