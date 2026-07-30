@@ -1,4 +1,6 @@
 import { useNavigate } from "react-router-dom";
+import AnimatedCounter from "../common/AnimatedCounter";
+
 import {
     Wallet,
     Boxes,
@@ -58,8 +60,10 @@ function PortfolioSummary({
                         </small>
 
                         <strong>
-                            {totalVolume}
-                        </strong>
+    <AnimatedCounter
+        value={totalVolume}
+    />
+</strong>
 
                     </div>
 
@@ -79,8 +83,10 @@ function PortfolioSummary({
                         </small>
 
                         <strong>
-                            {uniqueSymbols}
-                        </strong>
+    <AnimatedCounter
+        value={uniqueSymbols}
+    />
+</strong>
 
                     </div>
 
@@ -100,8 +106,12 @@ function PortfolioSummary({
                         </small>
 
                         <strong>
-                            ${averagePrice}
-                        </strong>
+    <AnimatedCounter
+        value={Number(averagePrice)}
+        prefix="$"
+        decimals={2}
+    />
+</strong>
 
                     </div>
 
@@ -121,8 +131,10 @@ function PortfolioSummary({
                         </small>
 
                         <strong>
-                            {largestOrder}
-                        </strong>
+    <AnimatedCounter
+        value={largestOrder}
+    />
+</strong>
 
                     </div>
 

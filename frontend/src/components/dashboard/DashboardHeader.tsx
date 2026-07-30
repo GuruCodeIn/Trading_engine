@@ -2,12 +2,22 @@ import { useEffect, useState } from "react";
 import {
     Activity,
     Clock3,
+    Wifi,
+    WifiOff,
+    RefreshCw,
 } from "lucide-react";
+
+import {
+    subscribeConnectionStatus,
+} from "../../services/webSocketService";
 
 function DashboardHeader() {
 
     const [currentTime, setCurrentTime] =
         useState(new Date());
+
+    const [connectionStatus, setConnectionStatus] =
+        useState("CONNECTING");
 
     useEffect(() => {
 
@@ -20,8 +30,24 @@ function DashboardHeader() {
 
             }, 1000);
 
-        return () =>
+        const unsubscribe =
+            subscribeConnectionStatus(
+                (status) => {
+
+                    setConnectionStatus(
+                        status
+                    );
+
+                }
+            );
+
+        return () => {
+
             clearInterval(timer);
+
+            unsubscribe();
+
+        };
 
     }, []);
 
@@ -46,6 +72,59 @@ function DashboardHeader() {
             }
         );
 
+    function getStatusClass() {
+
+        switch (connectionStatus) {
+
+            case "CONNECTED":
+                return "connected-status";
+
+            case "RECONNECTING":
+                return "reconnecting-status";
+
+            case "DISCONNECTED":
+                return "disconnected-status";
+
+            default:
+                return "connecting-status";
+
+        }
+
+    }
+
+    function getStatusIcon() {
+
+        switch (connectionStatus) {
+
+            case "CONNECTED":
+                return <Wifi size={16} />;
+
+            case "RECONNECTING":
+                return (
+                    <RefreshCw
+                        size={16}
+                        className="spin-icon"
+                    />
+                );
+
+            case "DISCONNECTED":
+                return (
+                    <WifiOff
+                        size={16}
+                    />
+                );
+
+            default:
+                return (
+                    <Activity
+                        size={16}
+                    />
+                );
+
+        }
+
+    }
+
     return (
 
         <div className="dashboard-header-card">
@@ -65,13 +144,13 @@ function DashboardHeader() {
 
             <div className="dashboard-status">
 
-                <div className="status-pill">
+                <div
+                    className={`status-pill ${getStatusClass()}`}
+                >
 
-                    <Activity
-                        size={16}
-                    />
+                    {getStatusIcon()}
 
-                    LIVE
+                    {connectionStatus}
 
                 </div>
 

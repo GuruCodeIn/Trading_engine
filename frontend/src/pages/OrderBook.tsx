@@ -1,7 +1,15 @@
 import { useEffect, useState } from "react";
 
 import Layout from "../components/Layout";
+
+import OrderBookHeader from "../components/orderbook/OrderBookHeader";
+import OrderBookSearch from "../components/orderbook/OrderBookSearch";
+
 import { getOrderBook } from "../services/orderBookService";
+
+import OrderBookTable from "../components/orderbook/OrderBookTable";
+
+import OrderBookStatistics from "../components/orderbook/OrderBookStatistics";
 
 import {
     connectWebSocket,
@@ -24,6 +32,7 @@ type OrderBookResponse = {
 };
 
 function OrderBook() {
+
     const [symbol, setSymbol] =
         useState("AAPL");
 
@@ -39,28 +48,40 @@ function OrderBook() {
         useState("");
 
     async function fetchOrderBook() {
+
         setLoading(true);
+
         setError("");
 
         try {
+
             const data =
-                await getOrderBook(symbol);
+                await getOrderBook(
+                    symbol
+                );
 
             setOrderBook(data);
+
         } catch (error) {
+
             console.error(error);
 
             setOrderBook(null);
 
             setError(
-                "Unable to load the order book. Please try again."
+                "Unable to load the order book."
             );
+
         } finally {
+
             setLoading(false);
+
         }
+
     }
 
     useEffect(() => {
+
         fetchOrderBook();
 
         connectWebSocket();
@@ -68,290 +89,98 @@ function OrderBook() {
         const unsubscribe =
             subscribeWebSocket(
                 (message) => {
+
                     if (
                         message.event ===
                         "order_created"
                     ) {
+
                         fetchOrderBook();
+
                     }
+
                 }
             );
 
-        return () => {
+        return () =>
             unsubscribe();
-        };
+
     }, []);
 
     return (
+
         <Layout>
-            <h2>Order Book</h2>
 
-            <div>
-                <label htmlFor="symbol">
-                    Symbol:
-                </label>
+            <OrderBookHeader />
 
-                <input
-                    id="symbol"
-                    type="text"
-                    value={symbol}
-                    onChange={(event) =>
-                        setSymbol(
-                            event.target.value.toUpperCase()
-                        )
-                    }
-                />
-
-                <button
-                    type="button"
-                    onClick={
-                        fetchOrderBook
-                    }
-                    disabled={loading}
-                >
-                    {loading
-                        ? "Loading..."
-                        : "Load Order Book"}
-                </button>
-            </div>
-
-            <br />
+            <OrderBookSearch
+                symbol={symbol}
+                loading={loading}
+                onSymbolChange={
+                    setSymbol
+                }
+                onSearch={
+                    fetchOrderBook
+                }
+            />
 
             {loading && (
                 <p>
-                    Loading order
-                    book...
+                    Loading order book...
                 </p>
             )}
 
             {error && (
                 <p>
-                    <strong>
-                        {error}
-                    </strong>
+                    {error}
                 </p>
             )}
 
             {!loading &&
-                !error &&
-                orderBook && (
-                    <>
-                        <p>
-                            <strong>
-                                Symbol:
-                            </strong>{" "}
-                            {
-                                orderBook.symbol
-                            }
-                        </p>
+    !error &&
+    orderBook && (
 
-                        <div
-                            style={{
-                                display:
-                                    "flex",
-                                gap: "40px",
-                                justifyContent:
-                                    "center",
-                                flexWrap:
-                                    "wrap",
-                            }}
-                        >
-                            <div>
-                                <h3
-                                    style={{
-                                        color:
-                                            "green",
-                                    }}
-                                >
-                                    BUY
-                                    ORDERS
-                                </h3>
+        <>
+    <OrderBookStatistics
+        totalSubmitted={
+            orderBook.totalOrdersSubmitted
+        }
+        totalFulfilled={
+            orderBook.totalOrdersFulfilled
+        }
+        totalUnfulfilled={
+            orderBook.totalOrdersUnfulfilled
+        }
+    />
 
-                                <table
-                                    border={
-                                        1
-                                    }
-                                    cellPadding={
-                                        8
-                                    }
-                                    style={{
-                                        borderCollapse:
-                                            "collapse",
-                                    }}
-                                >
-                                    <thead>
-                                        <tr>
-                                            <th>
-                                                Price
-                                            </th>
-                                            <th>
-                                                Orders
-                                            </th>
-                                        </tr>
-                                    </thead>
+    <div className="orderbook-grid">
 
-                                    <tbody>
-                                        {orderBook.buyOrders.length ===
-                                        0 ? (
-                                            <tr>
-                                                <td
-                                                    colSpan={
-                                                        2
-                                                    }
-                                                >
-                                                    No
-                                                    Buy
-                                                    Orders
-                                                </td>
-                                            </tr>
-                                        ) : (
-                                            orderBook.buyOrders.map(
-                                                (
-                                                    order,
-                                                    index
-                                                ) => (
-                                                    <tr
-                                                        key={
-                                                            index
-                                                        }
-                                                    >
-                                                        <td>
-                                                            {
-                                                                order.price
-                                                            }
-                                                        </td>
+        <OrderBookTable
+            title="Buy Orders"
+            side="BUY"
+            orders={
+                orderBook.buyOrders
+            }
+        />
 
-                                                        <td>
-                                                            {
-                                                                order.orderCount
-                                                            }
-                                                        </td>
-                                                    </tr>
-                                                )
-                                            )
-                                        )}
-                                    </tbody>
-                                </table>
-                            </div>
+        <OrderBookTable
+            title="Sell Orders"
+            side="SELL"
+            orders={
+                orderBook.sellOrders
+            }
+        />
 
-                            <div>
-                                <h3
-                                    style={{
-                                        color:
-                                            "red",
-                                    }}
-                                >
-                                    SELL
-                                    ORDERS
-                                </h3>
+    </div>
 
-                                <table
-                                    border={
-                                        1
-                                    }
-                                    cellPadding={
-                                        8
-                                    }
-                                    style={{
-                                        borderCollapse:
-                                            "collapse",
-                                    }}
-                                >
-                                    <thead>
-                                        <tr>
-                                            <th>
-                                                Price
-                                            </th>
-                                            <th>
-                                                Orders
-                                            </th>
-                                        </tr>
-                                    </thead>
+</>
 
-                                    <tbody>
-                                        {orderBook.sellOrders.length ===
-                                        0 ? (
-                                            <tr>
-                                                <td
-                                                    colSpan={
-                                                        2
-                                                    }
-                                                >
-                                                    No
-                                                    Sell
-                                                    Orders
-                                                </td>
-                                            </tr>
-                                        ) : (
-                                            orderBook.sellOrders.map(
-                                                (
-                                                    order,
-                                                    index
-                                                ) => (
-                                                    <tr
-                                                        key={
-                                                            index
-                                                        }
-                                                    >
-                                                        <td>
-                                                            {
-                                                                order.price
-                                                            }
-                                                        </td>
+)}
 
-                                                        <td>
-                                                            {
-                                                                order.orderCount
-                                                            }
-                                                        </td>
-                                                    </tr>
-                                                )
-                                            )
-                                        )}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                        <br />
-
-                        <h3>
-                            Statistics
-                        </h3>
-
-                        <p>
-                            <strong>
-                                Total
-                                Submitted:
-                            </strong>{" "}
-                            {
-                                orderBook.totalOrdersSubmitted
-                            }
-                        </p>
-
-                        <p>
-                            <strong>
-                                Total
-                                Fulfilled:
-                            </strong>{" "}
-                            {
-                                orderBook.totalOrdersFulfilled
-                            }
-                        </p>
-
-                        <p>
-                            <strong>
-                                Total
-                                Unfulfilled:
-                            </strong>{" "}
-                            {
-                                orderBook.totalOrdersUnfulfilled
-                            }
-                        </p>
-                    </>
-                )}
         </Layout>
+
     );
+
 }
 
 export default OrderBook;

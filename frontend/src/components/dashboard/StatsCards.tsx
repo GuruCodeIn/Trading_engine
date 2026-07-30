@@ -1,3 +1,5 @@
+import AnimatedCounter from "../common/AnimatedCounter";
+
 import {
     Package,
     TrendingUp,
@@ -64,9 +66,17 @@ function StatsCards({
                 </p>
 
                 <h1>
+
                     {loading
                         ? "--"
-                        : totalOrders}
+                        : (
+                            <AnimatedCounter
+                                value={
+                                    totalOrders
+                                }
+                            />
+                        )}
+
                 </h1>
 
                 <small>
@@ -95,9 +105,17 @@ function StatsCards({
                 </p>
 
                 <h1>
+
                     {loading
                         ? "--"
-                        : buyOrders}
+                        : (
+                            <AnimatedCounter
+                                value={
+                                    buyOrders
+                                }
+                            />
+                        )}
+
                 </h1>
 
                 <small>
@@ -126,9 +144,17 @@ function StatsCards({
                 </p>
 
                 <h1>
+
                     {loading
                         ? "--"
-                        : sellOrders}
+                        : (
+                            <AnimatedCounter
+                                value={
+                                    sellOrders
+                                }
+                            />
+                        )}
+
                 </h1>
 
                 <small>
@@ -169,6 +195,7 @@ function StatsCards({
         </div>
 
     );
+
 }
 
 export default StatsCards;
