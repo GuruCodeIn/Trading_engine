@@ -16,8 +16,8 @@ function AnimatedCounter({
     suffix = "",
 }: AnimatedCounterProps) {
 
-    const [displayValue, setDisplayValue] =
-        useState(value);
+   const [displayValue, setDisplayValue] =
+    useState(value);
 
     useEffect(() => {
 

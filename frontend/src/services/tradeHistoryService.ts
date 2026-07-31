@@ -3,7 +3,7 @@ import { API_BASE_URL } from "./api";
 export interface TradeOrder {
     id: number;
     symbol: string;
-    side: string;
+    side: "BUY" | "SELL";
     price: number;
     quantity: number;
 }
