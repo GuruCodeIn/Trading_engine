@@ -1,148 +1,127 @@
-// #pragma once
 #include "../include/TradingEngine/limit_order.h"
 
 #include <memory>
-using std::shared_ptr;
-
 #include <sstream>
-using std::ostringstream;
-
 #include <unordered_set>
+
+using std::shared_ptr;
+using std::ostringstream;
 using std::unordered_set;
 
-#include "../include/TradingEngine/transactions.h" 
-#include "../include/TradingEngine/order_type.h"
-#include "../include/TradingEngine/order_status.h"
-#include "../include/TradingEngine/order.h"
-
 const shared_ptr<Order>& LimitOrder::getHead() {
-	return limit_order_head;
+    return limit_order_head;
 }
 
-void LimitOrder::setHead(const std::shared_ptr<Order>& incoming_order) {
-	limit_order_head = incoming_order;
+void LimitOrder::setHead(const shared_ptr<Order>& incoming_order) {
+    limit_order_head = incoming_order;
 }
 
 const shared_ptr<Order>& LimitOrder::getTail() {
-	return limit_order_tail;
+    return limit_order_tail;
 }
 
-void LimitOrder::setTail(const std::shared_ptr<Order>& incoming_order) {
-	limit_order_tail = incoming_order;
+void LimitOrder::setTail(const shared_ptr<Order>& incoming_order) {
+    limit_order_tail = incoming_order;
 }
 
 int LimitOrder::getListLength() const {
-	return limit_order_length;
+    return limit_order_length;
 }
 
-float LimitOrder::getTotalQuantity() const
-{
-	float totalQuantity = 0.0f;
+float LimitOrder::getTotalQuantity() const {
+    float totalQuantity = 0.0f;
+    shared_ptr<Order> currentOrder = limit_order_head;
 
-	std::shared_ptr<Order> currentOrder = limit_order_head;
+    while (currentOrder != nullptr) {
+        totalQuantity += currentOrder->getPeakQuantity();
+        currentOrder = currentOrder->next_order;
+    }
 
-	while (currentOrder != nullptr)
-	{
-		totalQuantity += currentOrder->getPeakQuantity();
-		currentOrder = currentOrder->next_order;
-	}
-
-	return totalQuantity;
+    return totalQuantity;
 }
 
 int LimitOrder::updateListLength(const int& update_increment) {
-	return limit_order_length += update_increment;
+    limit_order_length += update_increment;
+    return limit_order_length;
 }
 
 void LimitOrder::addOrder(Order& incoming_order) {
 
-	/* Create pointer to incoming order */
-	const std::shared_ptr<Order>& incoming_order_ptr = std::make_shared<Order>(incoming_order);
+    shared_ptr<Order> incoming_order_ptr =
+        std::make_shared<Order>(incoming_order);
 
-	/* Increment LinkedList length. */
-	limit_order_length++;
+    limit_order_length++;
 
-	/* First Order */
-	if (limit_order_length == 1) {
-		limit_order_head = incoming_order_ptr;
-		limit_order_tail = incoming_order_ptr;
-	}
-	/* Otherwise, we add an order to the end of the list */
-	else {
-		incoming_order_ptr->prev_order = limit_order_tail;
-		limit_order_tail->next_order = incoming_order_ptr;
-		limit_order_tail = incoming_order_ptr;
-	}
+    incoming_order_ptr->next_order = nullptr;
+    incoming_order_ptr->prev_order = nullptr;
 
+    if (limit_order_head == nullptr) {
+        limit_order_head = incoming_order_ptr;
+        limit_order_tail = incoming_order_ptr;
+        return;
+    }
+
+    incoming_order_ptr->prev_order = limit_order_tail;
+    limit_order_tail->next_order = incoming_order_ptr;
+    limit_order_tail = incoming_order_ptr;
 }
 
-void LimitOrder::deleteOrder(const std::shared_ptr<Order>& order_to_delete) {
+void LimitOrder::deleteOrder(const shared_ptr<Order>& order_to_delete) {
 
-	/* Decrement LinkedList length. */
-	limit_order_length--;
+    if (order_to_delete == nullptr || limit_order_length == 0) {
+        return;
+    }
 
-	/* Remove last element. */
-	if (limit_order_length - 1 <= 0) {
-		limit_order_head = nullptr;
-		limit_order_tail = nullptr;
-		return;
-	}
+    shared_ptr<Order> next_order = order_to_delete->next_order;
+    shared_ptr<Order> prev_order = order_to_delete->prev_order;
 
-	/* These are order's that 'order_to_delete' points to. They help
-	us identify where the 'order_to_delete' is located within the LinkedList. */
-	const shared_ptr<Order>& nxt_order = order_to_delete->next_order;
-	const shared_ptr<Order>& prv_order = order_to_delete->prev_order;
+    if (prev_order != nullptr) {
+        prev_order->next_order = next_order;
+    } else {
+        limit_order_head = next_order;
+    }
 
-	/* Delete 'order_to_delete' from the middle of the LinkedList */
-	if (nxt_order != nullptr && prv_order != nullptr) {
-		nxt_order->prev_order = prv_order;
-		prv_order->next_order = nxt_order;
-	}
+    if (next_order != nullptr) {
+        next_order->prev_order = prev_order;
+    } else {
+        limit_order_tail = prev_order;
+    }
 
-	/* Delete the head */
-	else if (nxt_order != nullptr) {
-		nxt_order->prev_order = nullptr;
-		limit_order_head = nxt_order;  /* Update the head pointer. */
-	}
+    limit_order_length--;
 
-	/* Delete the tail */
-	else if (prv_order != nullptr) {
-		prv_order->next_order = nullptr;
-		limit_order_tail = prv_order;  /* Update the tail pointer. */
-	}
+    order_to_delete->next_order.reset();
+    order_to_delete->prev_order.reset();
 
+    if (limit_order_length == 0) {
+        limit_order_head.reset();
+        limit_order_tail.reset();
+    }
 }
 
-void LimitOrder::matchOrder(Order& incoming_order, unordered_set<unsigned int>& order_set, ostringstream& executed_orders) {
+void LimitOrder::matchOrder(
+    Order& incoming_order,
+    unordered_set<unsigned int>& order_set,
+    ostringstream& executed_orders) {
 
-	/* The first Order in the LinkedList to start matching with */
-	shared_ptr<Order> current_linked_list_order = limit_order_head;
+    shared_ptr<Order> current = limit_order_head;
 
-	/* We will match the incoming_order with Order's in our LinkedList until the incoming_order
-	is complete or the LinkedList is empty. The first if condition indicates that the incoming_order
-	is partially filled and the else condition indicates that the incoming_order is completely filled. */
-	while (incoming_order.getPeakQuantity() > 0 && limit_order_length > 0) {
+    while (incoming_order.getPeakQuantity() > 0 &&
+           current != nullptr &&
+           limit_order_length > 0) {
 
-		bool matched_order = current_linked_list_order->Match(incoming_order);
+        bool fullyMatched = current->Match(incoming_order);
 
-		/* Complete trade, meaning the current LinkedList order is fully completed. */
-		if (matched_order) {
-			/* Next order within the LinkedList. */
-			shared_ptr<Order> next_current_linked_list_order = current_linked_list_order->next_order;
+        if (!fullyMatched) {
+            break;
+        }
 
-			/* Store fulfilled order */
-			current_linked_list_order->storeOrderInfo(executed_orders, "\033[32m");
-			
-			/* Delete LinkedList order from order set */
-			order_set.erase(current_linked_list_order->getID());
-			/* Delete order from LinkedList. */
-			deleteOrder(current_linked_list_order);
-			/* Release the memory as order is no longer in use */
-			current_linked_list_order.reset();
+        shared_ptr<Order> next = current->next_order;
 
-			/* Next order in LinkedList. */
-			current_linked_list_order = next_current_linked_list_order;
-		}
-	}
-	return;
+        current->storeOrderInfo(executed_orders, "\033[32m");
+        order_set.erase(current->getID());
+        deleteOrder(current);
+
+        current.reset();
+        current = next;
+    }
 }
