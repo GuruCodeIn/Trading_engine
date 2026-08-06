@@ -107,9 +107,39 @@ void OrderBook::processOrder(Order& incoming_order) {
 	 return;
  }
 
-void OrderBook::cancelOrder(const std::shared_ptr<Order>& cancel_order) {
-	getOrderTreeByOrderType(cancel_order->getType()).deletePriceOrder(cancel_order);
-}
+ bool OrderBook::cancelOrder(
+     unsigned int orderId)
+ {
+     auto buyOrder =
+         buy_tree.order_lookup.find(
+             orderId);
+
+     if (
+         buyOrder !=
+         buy_tree.order_lookup.end())
+     {
+         buy_tree.deletePriceOrder(
+             buyOrder->second);
+
+         return true;
+     }
+
+     auto sellOrder =
+         sell_tree.order_lookup.find(
+             orderId);
+
+     if (
+         sellOrder !=
+         sell_tree.order_lookup.end())
+     {
+         sell_tree.deletePriceOrder(
+             sellOrder->second);
+
+         return true;
+     }
+
+     return false;
+ }
 
 void OrderBook::getCurrentSnapshot() {
     // Sort the Buy by price in descending order (reverse=True)

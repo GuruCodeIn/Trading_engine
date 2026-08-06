@@ -4,7 +4,8 @@
 
 using namespace drogon;
 
-class OrderController : public HttpController<OrderController>
+class OrderController
+    : public HttpController<OrderController>
 {
 public:
     METHOD_LIST_BEGIN
@@ -20,13 +21,30 @@ public:
         "/orders",
         Get);
 
+    // NEW
+    ADD_METHOD_TO(
+        OrderController::cancelOrder,
+        "/order/{1}/{2}",
+        Delete,
+        Options);
+
     METHOD_LIST_END
 
     void submitOrder(
         const HttpRequestPtr &req,
-        std::function<void(const HttpResponsePtr &)> &&callback);
+        std::function<void(
+            const HttpResponsePtr &)> &&callback);
 
     void getAllOrders(
         const HttpRequestPtr &req,
-        std::function<void(const HttpResponsePtr &)> &&callback);
+        std::function<void(
+            const HttpResponsePtr &)> &&callback);
+
+    // NEW
+    void cancelOrder(
+        const HttpRequestPtr &req,
+        std::function<void(
+            const HttpResponsePtr &)> &&callback,
+        std::string symbol,
+        unsigned int orderId);
 };

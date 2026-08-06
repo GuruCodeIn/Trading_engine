@@ -51,3 +51,11 @@ std::vector<Order> TradingService::getAllOrders()
 {
     return orderRepository.getAllOrders();
 }
+bool TradingService::cancelOrder(
+    const std::string &symbol,
+    unsigned int orderId)
+{
+    return getEngine().cancelOrder(
+        symbol,
+        orderId);
+}

@@ -1,9 +1,17 @@
 import {
     BookOpen,
     Wifi,
+    Activity,
 } from "lucide-react";
 
 function OrderBookHeader() {
+
+    const currentTime =
+        new Date().toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+        });
 
     return (
 
@@ -11,22 +19,69 @@ function OrderBookHeader() {
 
             <div>
 
-                <h1>
-                    Order Book
-                </h1>
+                <div
+                    style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "12px",
+                        marginBottom: "8px",
+                    }}
+                >
 
-                <p>
-                    Live market depth and
-                    price levels.
-                </p>
+                    <BookOpen
+                        size={32}
+                    />
+
+                    <div>
+
+                        <h1
+                            style={{
+                                margin: 0,
+                            }}
+                        >
+                            Order Book
+                        </h1>
+
+                        <p
+                            style={{
+                                margin: 0,
+                            }}
+                        >
+                            Live market depth and
+                            price levels
+                        </p>
+
+                    </div>
+
+                </div>
 
             </div>
 
-            <div className="status-pill connected-status">
+            <div
+                style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "12px",
+                }}
+            >
 
-                <Wifi size={16}/>
+                <div className="status-pill connected-status">
 
-                CONNECTED
+                    <Wifi size={16} />
+
+                    CONNECTED
+
+                </div>
+
+                <div className="status-pill">
+
+                    <Activity
+                        size={16}
+                    />
+
+                    {currentTime}
+
+                </div>
 
             </div>
 

@@ -18,7 +18,13 @@ public:
 
     void submitOrder(Order &order);
 
-    OrderBook &getOrderBook(const std::string &symbol);
+    OrderBook &getOrderBook(
+        const std::string &symbol);
 
     std::vector<Order> getAllOrders();
+
+    // NEW
+    bool cancelOrder(
+        const std::string &symbol,
+        unsigned int orderId);
 };

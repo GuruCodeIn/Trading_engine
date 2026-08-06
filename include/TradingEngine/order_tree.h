@@ -21,46 +21,57 @@ access to LimitOrder and Order objects.
 #include "order.h"
 #include "limit_order.h"
 
-
-class OrderTree {
+class OrderTree
+{
 public:
-	std::map<float, int> order_tree; /* Map (red-black tree) with LimitOrder price as key and LimitOrder length as value */
+	std::map<float, int> order_tree;
 
-	std::unordered_set<unsigned int> order_set; /* Unordered set with unique orders */
+	std::unordered_set<unsigned int> order_set;
 
-	std::unordered_map<float, LimitOrder> price_map; /* Unordered map with LimitOrder price as key and LimitOrder as value */
+	std::unordered_map<float, LimitOrder> price_map;
+
+	// NEW: Fast lookup of orders by ID
+	std::unordered_map<
+		unsigned int,
+		std::shared_ptr<Order>>
+		order_lookup;
 
 	float min_price;
 	float max_price;
 	OrderType type;
 
 public:
-	OrderTree(OrderType tree_type) : order_tree({}), order_set({}), price_map({}), min_price(std::numeric_limits<float>::quiet_NaN()), max_price(std::numeric_limits<float>::quiet_NaN()), type(tree_type) {};
+	OrderTree(OrderType tree_type)
+		: order_tree({}),
+		  order_set({}),
+		  price_map({}),
+		  order_lookup({}),
+		  min_price(std::numeric_limits<float>::quiet_NaN()),
+		  max_price(std::numeric_limits<float>::quiet_NaN()),
+		  type(tree_type) {}
 
-	/* Length of Order Tree, measured as total orders stored within the order_map */
 	size_t getLength() const;
 
 	const std::map<float, int> &getPriceLevels() const;
 	const std::unordered_map<float, LimitOrder> &getPriceMap() const;
 
-	/* Min properties */
-	const float& getMinPrice();
-	void setMinPrice(const float& new_min);
+	const float &getMinPrice();
+	void setMinPrice(const float &new_min);
 
-	/* Max properties */
-	const float& getMaxPrice();
-	void setMaxPrice(const float& new_max);
+	const float &getMaxPrice();
+	void setMaxPrice(const float &new_max);
 
-	const OrderType& getType() const;
+	const OrderType &getType() const;
 
-	void addPriceOrder(Order& incoming_order);
+	void addPriceOrder(Order &incoming_order);
 
-	void deletePriceOrder(const std::shared_ptr<Order>& order_to_delete);
+	void deletePriceOrder(const std::shared_ptr<Order> &order_to_delete);
 
-	void deleteLimitPrice(const float& limit_price);
+	void deleteLimitPrice(const float &limit_price);
 
-	void matchPriceOrder(Order& incoming_order, std::ostringstream& store_transaction);
-
+	void matchPriceOrder(
+		Order &incoming_order,
+		std::ostringstream &store_transaction);
 };
 
 #endif // !TRADING_ENGINE_SOURCE_HEADERS_ORDER_TREE_H_

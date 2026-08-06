@@ -46,7 +46,7 @@ public:
   /* Execute incoming_order or store if it's not completelty filled */
   void processOrder(Order& incoming_order);
 
-  void cancelOrder(const std::shared_ptr<Order>& cancel_order);
+  bool cancelOrder(unsigned int orderId);
 
   void getCurrentSnapshot();
 

@@ -49,72 +49,85 @@ const std::unordered_map<float, LimitOrder> &OrderTree::getPriceMap() const
     return price_map;
 }
 
-void OrderTree::addPriceOrder(Order& incoming_order) {
+void OrderTree::addPriceOrder(Order &incoming_order)
+{
+    float price =
+        incoming_order.getPrice();
 
-    /* Add to tree */
-    order_tree[incoming_order.getPrice()]++;
+    if (price_map.find(price) ==
+        price_map.end())
+    {
+        price_map.emplace(
+            price,
+            LimitOrder());
 
-    /* Add to price_map */
-    price_map[incoming_order.getPrice()].addOrder(incoming_order);
+        order_tree[price] = 0;
 
-    /* Add to order_set */
-    order_set.insert(incoming_order.getID());
+        if (std::isnan(min_price) ||
+            price < min_price)
+        {
+            min_price = price;
+        }
 
-    // Update max and min prices
-    if (std::isnan(min_price) || min_price > incoming_order.getPrice()) {
-        min_price = incoming_order.getPrice();
+        if (std::isnan(max_price) ||
+            price > max_price)
+        {
+            max_price = price;
+        }
     }
 
-    if (std::isnan(max_price) || max_price < incoming_order.getPrice()) {
-        max_price = incoming_order.getPrice();
-    }
+    price_map[price].addOrder(
+        incoming_order);
+
+    order_tree[price] =
+        price_map[price].getListLength();
+
+    order_set.insert(
+        incoming_order.getID());
+
+    // NEW
+    order_lookup[incoming_order.getID()] =
+        price_map[price].getTail();
 }
 
-
-void OrderTree::deletePriceOrder(const std::shared_ptr<Order>& order_to_delete) {
-
-    /* Remove from order_set */
-    if (order_set.erase(order_to_delete->getID()) == 0) {
+void OrderTree::deletePriceOrder(
+    const std::shared_ptr<Order> &order_to_delete)
+{
+    if (order_to_delete == nullptr)
+    {
         return;
     }
 
-    /* Remove Order from price_map */
-    price_map[order_to_delete->getPrice()].deleteOrder(order_to_delete);
+    float price =
+        order_to_delete->getPrice();
 
-    /* If the LimitOrder has no Order's left, we will remove it from the price dictionary as well */
-    if (price_map[order_to_delete->getPrice()].getListLength() <= 0) {
-        price_map.erase(order_to_delete->getPrice());
+    auto limitOrder =
+        price_map.find(price);
+
+    if (limitOrder == price_map.end())
+    {
+        return;
     }
 
-    /* Remove from Tree */
-    order_tree[order_to_delete->getPrice()]--;
+    limitOrder->second.deleteOrder(
+        order_to_delete);
 
-    /* If the LimitOrder has no Order's left, we will remove it from the Tree as well */
-    if (order_tree[order_to_delete->getPrice()] <= 0) {
-        order_tree.erase(order_to_delete->getPrice());
+    order_set.erase(
+        order_to_delete->getID());
+
+    // NEW
+    order_lookup.erase(
+        order_to_delete->getID());
+
+    if (
+        limitOrder->second.getListLength() == 0)
+    {
+        deleteLimitPrice(price);
     }
-
-    /* Update max and min prices */
-    if (max_price == order_to_delete->getPrice()) {
-
-        if (order_tree.empty()) {
-            max_price = std::numeric_limits<float>::quiet_NaN();
-        }
-
-        else if (price_map.find(order_to_delete->getPrice()) == price_map.end()) {
-            max_price = order_tree.rbegin()->first;
-        }
-    }
-
-    if (min_price == order_to_delete->getPrice()) {
-
-        if (order_tree.empty()) {
-            min_price = std::numeric_limits<float>::quiet_NaN();
-        }
-
-        else if (price_map.find(order_to_delete->getPrice()) == price_map.end()) {
-            min_price = order_tree.begin()->first;
-        }
+    else
+    {
+        order_tree[price] =
+            limitOrder->second.getListLength();
     }
 }
 

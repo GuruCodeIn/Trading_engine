@@ -25,6 +25,13 @@ function OrderBookTable({
                   )
               );
 
+    const totalOrders =
+        orders.reduce(
+            (sum, order) =>
+                sum + order.orderCount,
+            0
+        );
+
     return (
 
         <div
@@ -37,9 +44,18 @@ function OrderBookTable({
 
             <div className="orderbook-card-header">
 
-                <h3>
-                    {title}
-                </h3>
+                <div>
+
+                    <h3>
+                        {title}
+                    </h3>
+
+                    <small>
+                        {totalOrders.toLocaleString()}{" "}
+                        Orders
+                    </small>
+
+                </div>
 
                 <span
                     className={
@@ -69,7 +85,7 @@ function OrderBookTable({
 
                 <div className="empty-book">
 
-                    No Orders
+                    No Orders Available
 
                 </div>
 
@@ -82,21 +98,26 @@ function OrderBookTable({
                     ) => (
 
                         <div
-                            key={index}
+                            key={`${order.price}-${index}`}
                             className="orderbook-row"
                         >
 
                             <div
                                 className="depth-bar"
                                 style={{
-                                    width:
-                                        `${
-                                            (
-                                                order.orderCount /
-                                                maxOrders
-                                            ) *
-                                            100
-                                        }%`,
+                                    width: `${
+                                        (
+                                            order.orderCount /
+                                            maxOrders
+                                        ) * 100
+                                    }%`,
+                                    opacity:
+                                        0.15 +
+                                        (
+                                            order.orderCount /
+                                            maxOrders
+                                        ) *
+                                            0.55,
                                 }}
                             />
 
@@ -108,16 +129,14 @@ function OrderBookTable({
                                         : "sell-price"
                                 }
                             >
-                                $
+                                ₹{" "}
                                 {order.price.toFixed(
                                     2
                                 )}
                             </span>
 
                             <strong>
-                                {
-                                    order.orderCount
-                                }
+                                {order.orderCount.toLocaleString()}
                             </strong>
 
                         </div>

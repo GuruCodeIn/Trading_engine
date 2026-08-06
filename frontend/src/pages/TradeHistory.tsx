@@ -4,6 +4,7 @@ import Layout from "../components/Layout";
 
 import {
     getAllOrders,
+    cancelOrder,
     type TradeOrder,
 } from "../services/tradeHistoryService";
 
@@ -29,25 +30,71 @@ function TradeHistory() {
         }
     }
 
+    async function handleCancelOrder(
+    order: TradeOrder
+) {
+    try {
+
+        await cancelOrder(
+            order.symbol,
+            order.id
+        );
+
+        setOrders((previousOrders) =>
+            previousOrders.filter(
+                (currentOrder) =>
+                    currentOrder.id !==
+                    order.id
+            )
+        );
+
+    } catch {
+
+        alert(
+            "Failed to cancel order."
+        );
+
+    }
+}
+
     useEffect(() => {
         loadOrders();
 
         connectWebSocket();
 
-        const unsubscribe = subscribeWebSocket((message) => {
-            if (message.event === "order_created") {
-                setOrders((previousOrders) => [
-                    {
-                        id: message.order.id,
-                        symbol: message.order.symbol,
-                        side: message.order.type,
-                        price: message.order.price,
-                        quantity: message.order.quantity,
-                    },
-                    ...previousOrders,
-                ]);
-            }
-        });
+       const unsubscribe = subscribeWebSocket((message) => {
+
+    if (message.event === "order_created") {
+
+        setOrders((previousOrders) => [
+
+            {
+                id: message.order.id,
+                symbol: message.order.symbol,
+                side: message.order.type,
+                price: message.order.price,
+                quantity: message.order.quantity,
+            },
+
+            ...previousOrders,
+
+        ]);
+
+    }
+
+    if (message.event === "order_cancelled") {
+
+        setOrders((previousOrders) =>
+            previousOrders.filter(
+                (order) =>
+                    order.id !==
+                    message.orderId
+            )
+        );
+
+    }
+
+});
 
         return () => {
             unsubscribe();
@@ -152,13 +199,21 @@ function TradeHistory() {
                                         Price
                                     </th>
                                     <th
-                                        style={{
-                                            textAlign:
-                                                "right",
-                                        }}
-                                    >
-                                        Quantity
-                                    </th>
+    style={{
+        textAlign: "right",
+    }}
+>
+    Quantity
+</th>
+
+<th
+    style={{
+        textAlign: "center",
+        width: "120px",
+    }}
+>
+    Action
+</th>
                                 </tr>
                             </thead>
 
@@ -212,12 +267,27 @@ function TradeHistory() {
                                             </td>
 
                                             <td
-                                                style={{
-                                                    textAlign: "right",
-                                                }}
-                                            >
-                                                {order.quantity.toLocaleString()}
-                                            </td>
+    style={{
+        textAlign: "right",
+    }}
+>
+    {order.quantity.toLocaleString()}
+</td>
+
+<td
+    style={{
+        textAlign: "center",
+    }}
+>
+    <button
+        className="secondary-btn"
+        onClick={() =>
+            handleCancelOrder(order)
+        }
+    >
+        Cancel
+    </button>
+</td>
                                         </tr>
                                     ))
                                 )}

@@ -5,6 +5,7 @@
 
 #include "../../include/TradingEngine/order.h"
 #include "../../include/TradingEngine/order_type.h"
+#include "../controllers/MarketDataWebSocket.h"
 
 #include <json/json.h>
 #include <string>
@@ -134,4 +135,63 @@ void OrderController::getAllOrders(
 
     callback(
         HttpResponse::newHttpJsonResponse(response));
+}
+
+void OrderController::cancelOrder(
+    const HttpRequestPtr &req,
+    std::function<void(
+        const HttpResponsePtr &)> &&callback,
+    std::string symbol,
+    unsigned int orderId)
+{
+    TradingService tradingService;
+
+    bool cancelled =
+        tradingService.cancelOrder(
+            symbol,
+            orderId);
+
+    Json::Value response;
+
+    response["success"] = cancelled;
+
+    if (cancelled)
+    {
+        response["message"] =
+            "Order cancelled successfully.";
+
+        response["symbol"] =
+            symbol;
+
+        response["orderId"] =
+            orderId;
+
+        // Broadcast to all connected clients
+        Json::Value message;
+
+        message["event"] =
+            "order_cancelled";
+
+        message["symbol"] =
+            symbol;
+
+        message["orderId"] =
+            orderId;
+
+        Json::StreamWriterBuilder writer;
+
+        MarketDataWebSocket::broadcast(
+            Json::writeString(
+                writer,
+                message));
+    }
+    else
+    {
+        response["message"] =
+            "Order not found.";
+    }
+
+    callback(
+        HttpResponse::newHttpJsonResponse(
+            response));
 }

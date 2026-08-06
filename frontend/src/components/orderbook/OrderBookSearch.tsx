@@ -1,3 +1,8 @@
+import {
+    Search,
+    RefreshCw,
+} from "lucide-react";
+
 type OrderBookSearchProps = {
     symbol: string;
     loading: boolean;
@@ -14,6 +19,16 @@ function OrderBookSearch({
     onSearch,
 }: OrderBookSearchProps) {
 
+    function handleKeyDown(
+        event: React.KeyboardEvent<HTMLInputElement>
+    ) {
+
+        if (event.key === "Enter") {
+            onSearch();
+        }
+
+    }
+
     return (
 
         <div className="orderbook-search">
@@ -29,9 +44,15 @@ function OrderBookSearch({
                     type="text"
                     value={symbol}
                     placeholder="AAPL"
+                    maxLength={10}
+                    autoComplete="off"
+                    spellCheck={false}
+                    onKeyDown={handleKeyDown}
                     onChange={(event) =>
                         onSymbolChange(
-                            event.target.value.toUpperCase()
+                            event.target.value
+                                .toUpperCase()
+                                .trim()
                         )
                     }
                 />
@@ -44,9 +65,24 @@ function OrderBookSearch({
                 disabled={loading}
             >
 
-                {loading
-                    ? "Loading..."
-                    : "Load Order Book"}
+                {loading ? (
+                    <>
+                        <RefreshCw
+                            size={18}
+                            className="spin-icon"
+                        />
+
+                        Loading...
+                    </>
+                ) : (
+                    <>
+                        <Search
+                            size={18}
+                        />
+
+                        Load Order Book
+                    </>
+                )}
 
             </button>
 
