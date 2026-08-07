@@ -1,52 +1,365 @@
-# Multithreaded Limit Orderbook and Trading Engine
+# 🚀 High-Performance Trading Engine
 
-A fast, multithreaded and efficient trade matching engine built in C++ utilizing Chrono, BOOST, and STL libraries. A demo can be found [here.](https://www.youtube.com/watch?v=-k_1Zz8bcX8&ab_channel=HamzaRashid)
+A high-performance, multi-threaded trading engine built in **C++**, featuring a **REST API**, **real-time WebSocket updates**, **PostgreSQL persistence**, and a modern **React + TypeScript dashboard** for visualizing live market data.
 
-- **FIFO** (First in first out) approach is used to store orders'.
+This project is designed to simulate the core components of a modern electronic exchange, including order matching, live market depth, order management, and real-time client updates.
 
-- **Price Priority** algorithm is used for matching orders - where oldest buy order at the highest buying price is matched with the oldest sell order at the lowest selling price.
+---
 
-## Performance 
+# 📌 Project Status
 
-Two simulations were conducted using the same seed, involving the random generation of 100,000 "ETH" and "BTC" orders.
+**Current Stage:** Phase 8 — Order Management & Live Dashboard
 
-- **Single-threaded trading simulation**: The processing of 100,000 orders was accomplished within 6.51089 seconds, resulting in an average of 15,000 executions per second.
-- **Multi-threaded trading simulation**: The processing of 100,000 orders was accomplished within 4.23649 seconds, resulting in an average of 23,000 executions per second.
+### Completed Features
 
-## Architecture
+- ✅ High-performance C++ Matching Engine
+- ✅ Limit Order Book
+- ✅ Price-Time Priority Matching
+- ✅ Multi-threaded Order Processing
+- ✅ REST API (Drogon Framework)
+- ✅ PostgreSQL Integration
+- ✅ React + TypeScript Dashboard
+- ✅ Live Order Book
+- ✅ Live Dashboard Statistics
+- ✅ Live Trade History
+- ✅ WebSocket Real-time Updates
+- ✅ Order Search
+- ✅ Order Cancellation (End-to-End)
+- ✅ Automatic UI Synchronization using WebSockets
 
-Code is developed using efficient data structures (Binary Trees, Unordered Set and Unordered Map) keeping in mind High Frequency Trading (**HFT**) objectives. 
+---
 
-Time complexity for key order operations are as follows:
+# 🎯 Project Goals
 
-    - Add: O(log M) for the first order at a limit price, O(1) for all others
-    - Cancel: O(1)
-    - Execute: O(1)
+Build a production-style trading platform capable of:
 
-    Where M is the number of price limits and N is the number of orders (generally M << N).
+- Processing thousands of orders efficiently
+- Maintaining a live order book
+- Broadcasting market events instantly
+- Persisting orders in PostgreSQL
+- Providing a modern web dashboard
+- Demonstrating exchange architecture used in financial systems
 
-## Input Data Format
+---
 
-Order scripts expect the following input format (.csv or .txt file)
+# 🏗 Project Architecture
 
-    - Buy, Sell or Cancel: BUY or SELL or CANCEL
-    - Order ID: Unique or autoincrementing Integer (0,1,2...)
-    - Price: Positive float (1.00, 2.5...) 
-    - Quantity: Positive float (100.00, 200.00...)
+```
+                    React Dashboard
+                           │
+                   REST API / WebSocket
+                           │
+                    Drogon C++ Backend
+                           │
+                  Trading Service Layer
+                           │
+                   Trading Engine Core
+                           │
+        ┌──────────────────┴──────────────────┐
+        │                                     │
+   Buy Order Tree                      Sell Order Tree
+        │                                     │
+      Limit Orders                    Limit Orders
+        │                                     │
+      Linked List                      Linked List
+```
 
-Sample orders are as follows:
+---
 
-    - SELL,1,31502,7500
-    - BUY,2,31601,20000
-    - CANCEL,1,31502,7500
+# ⚙️ Technology Stack
 
-## Next Steps
+## Backend
 
-- Integrate the proof of concept with an API that provides real-time order book data, transitioning from the current CSV-based approach to a dynamic and automated data source.
-- Explore other data structure variations by utilizing a sparse array to store the Limits instead of a tree. This leads to distinctive time complexity trade-offs that impact performance considerations.
-- Establish a synchronization mechanism for the output_data variable across multiple threads using primitives such as conditional variables, locks, mutexes, or atomic operations to ensure consistent and orderly access.
+- C++17
+- Drogon Framework
+- PostgreSQL
+- CMake
+- STL
+- JSONCPP
+- Multi-threading
 
-## References
+---
 
-1. [Limit Order Book](https://web.archive.org/web/20110410160306/http://howtohft.wordpress.com:80/2011/02/15/how-to-build-a-fast-limit-order-book)
-2. [How to Build a Fast Limit Order Book](https://web.archive.org/web/20110410160306/http://howtohft.wordpress.com:80/2011/02/15/how-to-build-a-fast-limit-order-book)
+## Frontend
+
+- React
+- TypeScript
+- Vite
+- CSS
+- Fetch API
+- WebSocket API
+- Lucide Icons
+
+---
+
+## Database
+
+- PostgreSQL
+
+---
+
+## Development Tools
+
+- Git
+- GitHub
+- VS Code
+- CMake
+- Homebrew
+- Docker (Upcoming)
+
+---
+
+# 📂 Current Features
+
+## Trading Engine
+
+- Limit Order Matching
+- Buy/Sell Order Trees
+- Price-Time Priority
+- Linked List Order Queue
+- Order Lookup Table
+- Multi-threaded Simulation
+
+---
+
+## Backend APIs
+
+| Method | Endpoint | Description |
+|---------|----------|-------------|
+| POST | `/order` | Submit Order |
+| GET | `/orders` | Fetch Trade History |
+| GET | `/orderbook/{symbol}` | Fetch Order Book |
+| DELETE | `/order/{symbol}/{id}` | Cancel Order |
+
+---
+
+## Real-Time Features
+
+- Live Dashboard
+- Live Order Book
+- Live Trade History
+- Live Order Creation
+- Live Order Cancellation
+- WebSocket Broadcasting
+- Automatic UI Refresh
+
+---
+
+# 📊 Frontend Pages
+
+- Dashboard
+- Order Book
+- Place Order
+- Trade History
+
+---
+
+# 🧠 Core Data Structures
+
+- Red-Black Tree (`std::map`)
+- Hash Maps
+- Linked Lists
+- Shared Pointers
+- Order Lookup Table
+- Price Level Aggregation
+
+---
+
+# ⚡ Performance
+
+Current Engine Performance
+
+- 100,000 Orders Tested
+- Multi-threaded Engine
+- ~23,000 Orders/sec
+- O(log n) Price Level Operations
+- O(1) Order Lookup (Cancellation)
+
+---
+
+# 📁 Project Structure
+
+```
+Trading-Engine
+│
+├── backend
+│   ├── controllers
+│   ├── services
+│   ├── repositories
+│   ├── models
+│   └── main.cc
+│
+├── include
+│   └── TradingEngine
+│
+├── src
+│
+├── frontend
+│   ├── components
+│   ├── pages
+│   ├── services
+│   └── assets
+│
+├── build
+│
+└── CMakeLists.txt
+```
+
+---
+
+# ✅ Completed Milestones
+
+### Phase 1
+
+- Trading Engine
+- Order Book
+- Matching Logic
+
+---
+
+### Phase 2
+
+- REST Backend
+- PostgreSQL
+- Order Repository
+
+---
+
+### Phase 3
+
+- React Dashboard
+
+---
+
+### Phase 4
+
+- Live Order Book
+
+---
+
+### Phase 5
+
+- Dashboard Statistics
+
+---
+
+### Phase 6
+
+- WebSocket Integration
+
+---
+
+### Phase 7
+
+- Trade History
+- Search
+- Live Updates
+
+---
+
+### Phase 8
+
+- Order Cancellation
+- O(1) Order Lookup
+- DELETE API
+- WebSocket Cancel Events
+- Live UI Synchronization
+
+---
+
+# 🚧 Upcoming Features
+
+## Phase 9
+
+- Executed Trades (Trade Tape)
+- Trade Execution History
+- Live Trade Feed
+
+---
+
+## Phase 10
+
+- Market Orders
+
+---
+
+## Phase 11
+
+- Modify Existing Orders
+
+---
+
+## Phase 12
+
+- User Authentication
+- Multiple Trading Accounts
+
+---
+
+## Phase 13
+
+- Portfolio Management
+
+---
+
+## Phase 14
+
+- Interactive Charts
+- Price History
+- Analytics Dashboard
+
+---
+
+## Phase 15
+
+- Docker
+- Docker Compose
+- Production Deployment
+
+---
+
+## Phase 16
+
+- CI/CD Pipeline
+- GitHub Actions
+
+---
+
+## Phase 17
+
+- Monitoring
+- Logging
+- Metrics
+- Performance Dashboard
+
+---
+
+# 🎯 Learning Outcomes
+
+This project demonstrates practical knowledge of:
+
+- Data Structures
+- Algorithms
+- Object-Oriented Programming
+- Concurrent Programming
+- REST API Development
+- WebSockets
+- Database Integration
+- Frontend Development
+- System Design
+- Trading Systems
+- Full-Stack Development
+
+---
+
+# 👨‍💻 Author
+
+**Guruprasad H M**
+
+GitHub: https://github.com/gurucodein
+
+---
+
+# ⭐ Project Vision
+
+The goal of this project is to evolve from a high-performance matching engine into a production-style electronic trading platform with live market data, real-time execution, analytics, deployment infrastructure, and scalable backend architecture.
