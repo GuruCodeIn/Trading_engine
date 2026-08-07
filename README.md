@@ -1,4 +1,4 @@
-# 🚀 High-Performance Trading Engine
+# Multithreaded Limit Orderbook and High-Performance Trading Engine
 
 A high-performance, multi-threaded trading engine built in **C++**, featuring a **REST API**, **real-time WebSocket updates**, **PostgreSQL persistence**, and a modern **React + TypeScript dashboard** for visualizing live market data.
 
