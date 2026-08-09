@@ -164,7 +164,16 @@ void OrderTree::deleteLimitPrice(const float& limit_price) {
 }
 
 /* Match incoming_order and return executed transactions */
-void OrderTree::matchPriceOrder(Order& incoming_order, ostringstream& store_transaction) {
+void OrderTree::matchPriceOrder
+(
+    Order &incoming_order,
+    std::ostringstream &store_transaction,
+    TradeHistory &tradeHistory)
+
+{
+    std::cout
+        << "[MATCH] Entered matchPriceOrder()"
+        << std::endl;
 
     /* Check if no Orders exist */
     if (price_map.empty()) {
@@ -193,7 +202,21 @@ void OrderTree::matchPriceOrder(Order& incoming_order, ostringstream& store_tran
 
         /* We access the appropriate LimitOrderand then start matching */
         LimitOrder& matching_LimitOrder = price_map[price_to_match];
-        matching_LimitOrder.matchOrder(incoming_order, order_set, store_transaction);
+
+        std::cout
+            << "[MATCH] Matching at price "
+            << price_to_match
+            << std::endl;
+
+        matching_LimitOrder.matchOrder(
+            incoming_order,
+            order_set,
+            store_transaction,
+            tradeHistory);
+
+        std::cout
+            << "[MATCH] Returned from matchOrder()"
+            << std::endl;
 
         /* Delete LimitOrder if its empty */
         if (matching_LimitOrder.getListLength() == 0) {

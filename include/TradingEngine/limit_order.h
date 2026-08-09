@@ -16,6 +16,7 @@ class through a doubly LinkedList.
 #include "order_type.h"
 #include "order_status.h"
 #include "order.h"
+#include "trade_history.h"
 
 class LimitOrder {
 private:
@@ -40,9 +41,10 @@ public:
     void deleteOrder(const std::shared_ptr<Order>& order_to_delete);
 
     void matchOrder(
-        Order& incoming_order,
-        std::unordered_set<unsigned int>& order_set,
-        std::ostringstream& executed_orders);
+        Order &incoming_order,
+        std::unordered_set<unsigned int> &order_set,
+        std::ostringstream &executed_orders,
+        TradeHistory &tradeHistory);
 };
 
 #endif

@@ -1,14 +1,34 @@
 #include "../include/TradingEngine/trading_engine.h"
 
-void TradingEngine::submitOrder(Order &order)
+#include <iostream>
+
+void TradingEngine::submitOrder(
+    Order &order)
 {
-    orderBooks[order.getSymbol()].processOrder(order);
+    std::cout
+        << "[ENGINE] Processing Order "
+        << order.getID()
+        << std::endl;
+
+    orderBooks[order.getSymbol()].processOrder(
+        order,
+        tradeHistory);
+
+    std::cout
+        << "[ENGINE] Trades Stored = "
+        << tradeHistory.getTrades().size()
+        << std::endl;
 }
 
 OrderBook &TradingEngine::getOrderBook(
     const std::string &symbol)
 {
     return orderBooks[symbol];
+}
+
+TradeHistory &TradingEngine::getTradeHistory()
+{
+    return tradeHistory;
 }
 
 bool TradingEngine::cancelOrder(
@@ -25,9 +45,4 @@ bool TradingEngine::cancelOrder(
 
     return book->second.cancelOrder(
         orderId);
-}
-
-TradeHistory &TradingEngine::getTradeHistory()
-{
-    return tradeHistory;
 }

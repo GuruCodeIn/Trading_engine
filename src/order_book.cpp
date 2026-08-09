@@ -82,9 +82,12 @@ void OrderBook::processOrder(
 	OrderTree& matching_tree = (incoming_order.getType() == OrderType::BUY) ? sell_tree : buy_tree;
 
 	/* Match the incoming_order */
-	matching_tree.matchPriceOrder(incoming_order, output_data);
+    matching_tree.matchPriceOrder(
+        incoming_order,
+        output_data,
+        tradeHistory);
 
-	/* Check if the Order has been fully matched, if not we will add it to its appropriate tree */
+    /* Check if the Order has been fully matched, if not we will add it to its appropriate tree */
 	if (incoming_order.getStatus() == OrderStatus::FULFILLED) {
 
 		/* Store fulfilled order */

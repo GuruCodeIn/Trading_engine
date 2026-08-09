@@ -20,6 +20,7 @@ access to LimitOrder and Order objects.
 #include "order_status.h"
 #include "order.h"
 #include "limit_order.h"
+#include "trade_history.h"
 
 class OrderTree
 {
@@ -71,7 +72,8 @@ public:
 
 	void matchPriceOrder(
 		Order &incoming_order,
-		std::ostringstream &store_transaction);
+		std::ostringstream &store_transaction,
+		TradeHistory &tradeHistory);
 };
 
 #endif // !TRADING_ENGINE_SOURCE_HEADERS_ORDER_TREE_H_

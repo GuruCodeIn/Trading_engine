@@ -16,12 +16,14 @@ private:
 public:
     TradingEngine() = default;
 
-    void submitOrder(Order &order);
+    void submitOrder(
+        Order &order);
 
-    OrderBook &getOrderBook(const std::string &symbol);
+    OrderBook &getOrderBook(
+        const std::string &symbol);
+
     TradeHistory &getTradeHistory();
 
-    // NEW
     bool cancelOrder(
         const std::string &symbol,
         unsigned int orderId);

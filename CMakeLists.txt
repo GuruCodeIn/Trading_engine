@@ -17,14 +17,16 @@ include_directories(
 # -----------------------
 
 add_library(TradingEngine
-    src/trading_engine.cpp
-    src/order.cpp
-    src/order_book.cpp
-    src/order_tree.cpp
-    src/limit_order.cpp
-    src/order_status.cpp
-    src/order_type.cpp
-    src/transactions.cpp
+src/trading_engine.cpp
+src/order.cpp
+src/order_book.cpp
+src/order_tree.cpp
+src/limit_order.cpp
+src/order_status.cpp
+src/order_type.cpp
+src/transactions.cpp
+src/trade.cpp
+src/trade_history.cpp
 )
 
 target_include_directories(TradingEngine
@@ -65,6 +67,7 @@ add_executable(TradingBackend
 
     backend/controllers/HealthController.cc
     backend/controllers/OrderController.cc
+    backend/controllers/TradeController.cc
     backend/controllers/OrderBookController.cc
     backend/controllers/MarketDataWebSocket.cc
 

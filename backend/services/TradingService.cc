@@ -21,9 +21,13 @@ void TradingService::submitOrder(Order &order)
     message["order"]["id"] = order.getID();
     message["order"]["symbol"] = order.getSymbol();
     message["order"]["type"] =
-    (order.getType() == OrderType::BUY) ? "BUY" : "SELL";
-    message["order"]["price"] = order.getPrice();
-    message["order"]["quantity"] = order.getOriginalQuantity();
+        (order.getType() == OrderType::BUY)
+            ? "BUY"
+            : "SELL";
+    message["order"]["price"] =
+        order.getPrice();
+    message["order"]["quantity"] =
+        order.getOriginalQuantity();
 
     Json::StreamWriterBuilder writer;
 
@@ -40,17 +44,27 @@ void TradingService::submitOrder(Order &order)
         << jsonMessage
         << std::endl;
 
-    MarketDataWebSocket::broadcast(jsonMessage);
+    MarketDataWebSocket::broadcast(
+        jsonMessage);
 }
 
-OrderBook &TradingService::getOrderBook(const std::string &symbol)
+OrderBook &TradingService::getOrderBook(
+    const std::string &symbol)
 {
     return getEngine().getOrderBook(symbol);
 }
+
 std::vector<Order> TradingService::getAllOrders()
 {
     return orderRepository.getAllOrders();
 }
+
+TradeHistory &
+TradingService::getTradeHistory()
+{
+    return getEngine().getTradeHistory();
+}
+
 bool TradingService::cancelOrder(
     const std::string &symbol,
     unsigned int orderId)

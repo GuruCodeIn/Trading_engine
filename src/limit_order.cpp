@@ -1,8 +1,10 @@
 #include "../include/TradingEngine/limit_order.h"
+#include "../include/TradingEngine/trade.h"
 
 #include <memory>
 #include <sstream>
 #include <unordered_set>
+#include <iostream>
 
 using std::shared_ptr;
 using std::ostringstream;
@@ -99,29 +101,68 @@ void LimitOrder::deleteOrder(const shared_ptr<Order>& order_to_delete) {
 }
 
 void LimitOrder::matchOrder(
-    Order& incoming_order,
-    unordered_set<unsigned int>& order_set,
-    ostringstream& executed_orders) {
+    Order &incoming_order,
+    unordered_set<unsigned int> &order_set,
+    ostringstream &executed_orders,
+    TradeHistory &tradeHistory)
 
-    shared_ptr<Order> current = limit_order_head;
+    {
 
-    while (incoming_order.getPeakQuantity() > 0 &&
-           current != nullptr &&
-           limit_order_length > 0) {
+        shared_ptr<Order> current = limit_order_head;
 
-        bool fullyMatched = current->Match(incoming_order);
+        while (incoming_order.getPeakQuantity() > 0 &&
+               current != nullptr &&
+               limit_order_length > 0)
+        {
 
-        if (!fullyMatched) {
-            break;
+            bool fullyMatched = current->Match(incoming_order);
+
+            static unsigned int nextTradeId = 1;
+
+            unsigned int buyOrderId;
+            unsigned int sellOrderId;
+
+            if (incoming_order.getType() == OrderType::BUY)
+            {
+                buyOrderId = incoming_order.getID();
+                sellOrderId = current->getID();
+            }
+            else
+            {
+                buyOrderId = current->getID();
+                sellOrderId = incoming_order.getID();
+            }
+
+            float executedQuantity =
+                current->getQuantityTransacted();
+
+            Trade trade(
+                nextTradeId++,
+                buyOrderId,
+                sellOrderId,
+                incoming_order.getSymbol(),
+                current->getPrice(),
+                executedQuantity);
+
+            tradeHistory.addTrade(trade);
+
+            std::cout
+                << "[LIMIT_ORDER] Trade Added. Total Trades = "
+                << tradeHistory.getTrades().size()
+                << std::endl;
+
+            if (!fullyMatched)
+            {
+                break;
+            }
+
+            shared_ptr<Order> next = current->next_order;
+
+            current->storeOrderInfo(executed_orders, "\033[32m");
+            order_set.erase(current->getID());
+            deleteOrder(current);
+
+            current.reset();
+            current = next;
         }
-
-        shared_ptr<Order> next = current->next_order;
-
-        current->storeOrderInfo(executed_orders, "\033[32m");
-        order_set.erase(current->getID());
-        deleteOrder(current);
-
-        current.reset();
-        current = next;
     }
-}
