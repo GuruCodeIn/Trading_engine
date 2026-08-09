@@ -26,3 +26,8 @@ bool TradingEngine::cancelOrder(
     return book->second.cancelOrder(
         orderId);
 }
+
+TradeHistory &TradingEngine::getTradeHistory()
+{
+    return tradeHistory;
+}

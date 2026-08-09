@@ -19,6 +19,7 @@ using std::ostringstream;
 #include "order.h"
 #include "limit_order.h"
 #include "order_tree.h"
+#include "trade_history.h"
 
 class OrderBook {
 private:
@@ -44,7 +45,9 @@ public:
   string getResults();
 
   /* Execute incoming_order or store if it's not completelty filled */
-  void processOrder(Order& incoming_order);
+  void processOrder(
+      Order &incoming_order,
+      TradeHistory &tradeHistory);
 
   bool cancelOrder(unsigned int orderId);
 

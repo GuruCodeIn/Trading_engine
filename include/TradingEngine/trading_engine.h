@@ -5,11 +5,13 @@
 #include <unordered_map>
 
 #include "order_book.h"
+#include "trade_history.h"
 
 class TradingEngine
 {
 private:
     std::unordered_map<std::string, OrderBook> orderBooks;
+    TradeHistory tradeHistory;
 
 public:
     TradingEngine() = default;
@@ -17,6 +19,7 @@ public:
     void submitOrder(Order &order);
 
     OrderBook &getOrderBook(const std::string &symbol);
+    TradeHistory &getTradeHistory();
 
     // NEW
     bool cancelOrder(

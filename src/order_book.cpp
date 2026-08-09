@@ -67,7 +67,10 @@ string OrderBook::getResults() {
 }
 
 /* Execute incoming_order or store if it's not completelty filled */
-void OrderBook::processOrder(Order& incoming_order) {
+void OrderBook::processOrder(
+    Order &incoming_order,
+    TradeHistory &tradeHistory)
+{
 
     /* Update Total Orders submitted */
     total_orders_submitted++;
@@ -105,7 +108,7 @@ void OrderBook::processOrder(Order& incoming_order) {
 	}
 
 	 return;
- }
+}
 
  bool OrderBook::cancelOrder(
      unsigned int orderId)
